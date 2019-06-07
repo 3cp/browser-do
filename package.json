@@ -1,0 +1,45 @@
+{
+  "name": "browser-do",
+  "version": "0.0.1",
+  "description": "Alternative implementation of browser-run and tape-run, with better Windows support and smaller footprint.",
+  "main": "index.js",
+  "engines": {
+    "node": ">=8.9"
+  },
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "scripts": {
+    "lint": "eslint index.js lib test",
+    "preversion": "npm test",
+    "version": "standard-changelog && git add CHANGELOG.md",
+    "postversion": "git push && git push --tags && npm publish",
+    "pretest": "npm run lint",
+    "test": "ava",
+    "coverage": "nyc ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3cp/browser-do"
+  },
+  "keywords": [
+    "browser",
+    "test"
+  ],
+  "author": "Chunpeng Huo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/3cp/browser-do/issues"
+  },
+  "homepage": "https://github.com/3cp/browser-do#readme",
+  "devDependencies": {
+    "ava": "^2.0.0",
+    "eslint": "^5.16.0",
+    "nyc": "^14.1.1",
+    "standard-changelog": "^2.0.11"
+  },
+  "dependencies": {
+    "lodash.kebabcase": "^4.1.1"
+  }
+}
