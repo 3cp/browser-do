@@ -11,14 +11,14 @@ function load(name) {
   }
 
   if (name === 'chrome-headless') {
-    return {
+    return () => ({
       path: {
         linux: '/linux/chrome',
         darwin: '/mac/chrome',
         win32: '/win/chrome.exe'
       },
       args: ['--enable-automation', '--headless', '--disable-gpu']
-    };
+    });
   }
 
   throw new Error('not available');
@@ -50,14 +50,8 @@ if (process.platform === 'darwin') {
     t.deepEqual(_getBrowser('safari'), {
       path: '/mac/safari'
     });
-    t.deepEqual(_getBrowser('Safari'), {
-      path: '/mac/safari'
-    });
-    t.deepEqual(_getBrowser('chrome_headless'), {
-      args: ['--enable-automation', '--headless', '--disable-gpu'],
-      path: '/mac/chrome'
-    });
-    t.deepEqual(_getBrowser('ChromeHeadless'), {
+
+    t.deepEqual(_getBrowser('chrome-headless'), {
       args: ['--enable-automation', '--headless', '--disable-gpu'],
       path: '/mac/chrome'
     });
@@ -70,7 +64,7 @@ if (process.platform === 'win32') {
   });
 
   test('getBrowser gets browser on win32', t => {
-    t.deepEqual(_getBrowser('chrome headless'), {
+    t.deepEqual(_getBrowser('chrome-headless'), {
       args: ['--enable-automation', '--headless', '--disable-gpu'],
       path: '/win/chrome'
     });
