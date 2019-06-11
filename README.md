@@ -18,3 +18,18 @@ browser-do offers
 
 TODO keep opts same as much as possible, add one option (or make it default) for TAP output.
 
+
+### Supported Browsers
+
+|                    | macOS | Linux | Windows |
+|--------------------|-------|-------|---------|
+| chrome             | Yes   | Yes   | Yes     |
+| chrome-headless    | Yes   | Yes   | Yes     |
+| chromium           | Yes   | Yes   | Yes     |
+| chromium-headless  | Yes   | Yes   | Yes     |
+| edge               |       |       | Yes     |
+| electron (default) | Yes   | Yes   | Yes     |
+| firefox            | Yes   | Yes   | Yes     |
+| firefox-headless   | Yes   | Yes   | Yes     |
+| ie                 |       |       | Yes     |
+| safari             | Yes   |       |         |
