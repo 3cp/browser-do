@@ -34,6 +34,6 @@ catch [ Microsoft.PowerShell.Commands.ProcessCommandException ]
 }
 catch
 {
-    Write-Output "An unexpected error occured while starting Microsoft Edge."
+    Write-Output "An unexpected error occurred while starting Microsoft Edge."
     exit 1
 }
