@@ -19,8 +19,17 @@ opts
     console.log('')
     console.log('Available browsers if installed (for -b, --browser <name>):');
     console.log('  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, safari');
+    console.log('');
+    console.log('There is some tolerance on browser name, for example:');
+    console.log('  -b ChromeHeadless');
+    console.log('  -b chromeHeadless');
+    console.log('  -b chrome_headless');
+    console.log('  -b "chrome headless"');
+    console.log('all work just like -b chrome-headless');
   })
   .parse(process.argv);
+
+const tap = opts.tap || opts.tape || opts.jasmine;
 
 const chunks = [];
 const readInput = new Writable({
@@ -32,13 +41,11 @@ const readInput = new Writable({
 
 process.stdin.pipe(readInput);
 
-const tap = opts.tap || opts.tape || opts.jasmine;
-
 readInput.on('finish', () => {
-  const input = Buffer.concat(chunks).toString();
+  const data = Buffer.concat(chunks).toString();
   const holdOutput = through();
 
-  const browserDo = run(opts, input, holdOutput);
+  const browserDo = run(opts, data, holdOutput);
 
   // note output stream is piped to two different destinations.
   // 1. tap-parser to deal with tap results
