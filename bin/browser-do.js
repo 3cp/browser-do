@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-var run = require('../index');
-var optimist = require('optimist');
+const run = require('../index');
+const optimist = require('optimist');
 const TapParser = require('tap-parser');
 const through = require('through');
+const {Writable} = require('stream');
 
-var argv = optimist
+const argv = optimist
   .usage(
     'Run JavaScript in a browser.\n' +
     'Write code to stdin and receive console output on stdout.\n' +
@@ -28,9 +29,6 @@ var argv = optimist
   .describe('mock', 'Path to code to handle requests for mocking a dynamic back-end')
   .alias('m', 'mock')
 
-  .describe('input', 'Input type. Defaults to \'javascript\', can be set to \'html\'.')
-  .alias('i', 'input')
-
   .describe('keep-open', 'Leave the browser open for debugging after running tests. This is only needed for dealing with TAP test result.')
   .alias('k', 'keep-open')
   .alias('keepOpen', 'keep-open')
@@ -45,49 +43,62 @@ if (argv.help) {
   process.exit();
 }
 
-const holdOutput = through();
-
-const browserDo = run(argv, process.stdin, holdOutput);
-
-const parser = new TapParser(results => {
-  if (!argv.keepOpen) {
-    process.exit(results.ok ? 0 : 1);
+const chunks = [];
+const readInput = new Writable({
+  write(chunk, enc, cb) {
+    chunks.push(chunk);
+    cb();
   }
 });
 
-parser.on('bailout', m => {
-  console.error(m); // eslint-disable-line no-console
-  process.exit(1);
-});
+process.stdin.pipe(readInput);
 
-let count, done = 0;
-parser.on('plan', p => {
-  count = p.end - p.start + 1;
-  check();
-});
+readInput.on('finish', () => {
+  const input = Buffer.concat(chunks).toString();
+  const holdOutput = through();
 
-parser.on('assert', () => {
-  done++;
-  check();
-});
+  const browserDo = run(argv, input, holdOutput);
 
-let finished = false;
-function check() {
-  if (finished) return;
-  if (!count || done < count) return;
-  finished = true;
-  setTimeout(() => parser.end(), 1000);
-}
+  const parser = new TapParser(results => {
+    if (!argv.keepOpen) {
+      process.exit(results.ok ? 0 : 1);
+    }
+  });
 
-// note output stream is piped to two different consumers.
-// 1. tap-parser to deal with tap results
-holdOutput.pipe(parser);
-// 2. to stdout
-holdOutput.pipe(process.stdout);
+  parser.on('bailout', m => {
+    console.error(m); // eslint-disable-line no-console
+    process.exit(1);
+  });
 
-process.on('exit', () => browserDo.stop());
+  let count, done = 0;
+  parser.on('plan', p => {
+    count = p.end - p.start + 1;
+    check();
+  });
 
-process.on('SIGINT', () => {
-  // manually call process.exit() so it will trigger 'exit' event.
-  process.exit();
+  parser.on('assert', () => {
+    done++;
+    check();
+  });
+
+  let finished = false;
+  function check() {
+    if (finished) return;
+    if (!count || done < count) return;
+    finished = true;
+    setTimeout(() => parser.end(), 1000);
+  }
+
+  // note output stream is piped to two different destinations.
+  // 1. tap-parser to deal with tap results
+  holdOutput.pipe(parser);
+  // 2. to stdout
+  holdOutput.pipe(process.stdout);
+
+  process.on('exit', () => browserDo.stop());
+
+  process.on('SIGINT', () => {
+    // manually call process.exit() so it will trigger 'exit' event.
+    process.exit();
+  });
 });

@@ -2,7 +2,6 @@
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
-const enstore = require('enstore');
 const xws = require('xhr-write-stream')();
 const launch = require('./lib/launch');
 const serveStatic = require('serve-static');
@@ -18,15 +17,14 @@ try {
   console.error('Reporter script missing.');
 }
 
-module.exports = function (opts, input, output) {
+module.exports = function (opts, data, output) {
   if (!opts) opts = {};
   if ('number' == typeof opts) opts = { port: opts };
   if (!opts.browser) opts.browser = 'electron';
-  if (!opts.input) opts.input = 'javascript';
-  return runner(opts, input, output);
+  return runner(opts, data, output);
 };
 
-function runner (opts, input, output) {
+function runner (opts, data, output) {
   const browser = getBrowser(kebabCase(opts.browser));
 
   if (!browser) {
@@ -34,17 +32,22 @@ function runner (opts, input, output) {
     process.exit(1);
   }
 
-  var bundle = enstore();
-  input.pipe(bundle.createWriteStream());
+  const isHtmlData = data.match(/^\s*</);
 
   var mockHandler = opts.mock && require(path.resolve('./', opts.mock));
 
   var server = http.createServer(function (req, res) {
-    if (opts.input === 'javascript') {
+    if (isHtmlData) {
+      if (req.url == '/') {
+        res.end(data);
+        return;
+      }
+    } else {
+      // JavaScript data
       if (/^\/bundle\.js/.test(req.url)) {
         res.setHeader('content-type', 'application/javascript');
         res.setHeader('cache-control', 'no-cache');
-        bundle.createReadStream().pipe(res);
+        res.end(data);
         return;
       }
 
@@ -60,11 +63,6 @@ function runner (opts, input, output) {
   </body>
 </html>`);
         res.end();
-        return;
-      }
-    } else if (opts.input === 'html') {
-      if (req.url == '/') {
-        bundle.createReadStream().pipe(res);
         return;
       }
     }
