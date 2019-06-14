@@ -14,7 +14,7 @@ var argv = optimist
   .describe('browser', 'Browser to use. '
       + 'Always available: electron. '
       + 'Available if installed: '
-      + 'chrome, firefox, ie, phantom, safari')
+      + 'chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, electron, safari')
   .alias('browser', 'b')
   .default('browser', 'electron')
 
@@ -30,7 +30,7 @@ var argv = optimist
   .describe('input', 'Input type. Defaults to \'javascript\', can be set to \'html\'.')
   .alias('i', 'input')
 
-  .describe('keep-open', 'Leave the browser open for debugging after running tests')
+  .describe('keep-open', 'Leave the browser open for debugging after running tests. This is only needed for dealing with TAP test result.')
   .alias('k', 'keep-open')
   .alias('keepOpen', 'keep-open')
 

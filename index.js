@@ -11,6 +11,9 @@ const serveStatic = require('serve-static');
 const finalhandler = require('finalhandler');
 const destroyable = require('server-destroy');
 
+const kebabCase = require('lodash.kebabcase');
+const getBrowser = require('./lib/get-browser');
+
 const reporterPath = path.join(__dirname, 'dist', 'reporter.js');
 try {
   fs.statSync(reporterPath);
@@ -27,6 +30,13 @@ module.exports = function (opts) {
 };
 
 function runner (opts) {
+  const browser = getBrowser(kebabCase(opts.browser));
+
+  if (!browser) {
+    console.error('No browser found for ' + opts.browser);
+    process.exit(1);
+  }
+
   var empty = true;
   var input = through(function (chunk) {
     if (empty && chunk.toString().trim() != '') empty = false;
@@ -98,7 +108,7 @@ function runner (opts) {
   });
   destroyable(server);
 
-  let browser;
+  let browserProc;
 
   if (opts.port) {
     server.listen(opts.port);
@@ -109,12 +119,12 @@ function runner (opts) {
       var port = address.port;
 
       try {
-        browser = launch('http://localhost:' + port, opts.browser);
+        browserProc = launch('http://localhost:' + port, browser);
       } catch (err) {
         return dpl.emit('error', err);
       }
 
-      browser.on('exit', (code, signal) => {
+      browserProc.on('exit', (code, signal) => {
         try {
           server.destroy();
         } catch (e) {
@@ -131,7 +141,7 @@ function runner (opts) {
     } catch (e) {
       // ignore
     }
-    if (browser) browser.kill();
+    if (browserProc) browserProc.kill();
   };
 
   return dpl;

@@ -2,7 +2,7 @@ package-lock.json
 node_modules
 .nyc_output
 coverage
-/__*
+/__play.js
 /tmp
 /dist
 
