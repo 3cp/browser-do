@@ -2,6 +2,7 @@
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
+const enstore = require('enstore');
 const xws = require('xhr-write-stream')();
 const launch = require('./lib/launch');
 const serveStatic = require('serve-static');
@@ -33,6 +34,9 @@ function runner (opts, input, output) {
     process.exit(1);
   }
 
+  var bundle = enstore();
+  input.pipe(bundle.createWriteStream());
+
   var mockHandler = opts.mock && require(path.resolve('./', opts.mock));
 
   var server = http.createServer(function (req, res) {
@@ -40,7 +44,7 @@ function runner (opts, input, output) {
       if (/^\/bundle\.js/.test(req.url)) {
         res.setHeader('content-type', 'application/javascript');
         res.setHeader('cache-control', 'no-cache');
-        input.pipe(res);
+        bundle.createReadStream().pipe(res);
         return;
       }
 
@@ -60,7 +64,7 @@ function runner (opts, input, output) {
       }
     } else if (opts.input === 'html') {
       if (req.url == '/') {
-        input.pipe(res);
+        bundle.createReadStream().pipe(res);
         return;
       }
     }

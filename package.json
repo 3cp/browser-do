@@ -1,7 +1,7 @@
 {
   "name": "browser-do",
   "version": "0.0.1",
-  "description": "Alternative implementation of browser-run and tape-run, with better Windows support and smaller footprint.",
+  "description": "Alternative implementation of browser-run and tape-run, with better Windows support.",
   "main": "index.js",
   "engines": {
     "node": ">=8.9"
@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "electron": "^5.0.3",
+    "enstore": "^1.0.1",
     "finalhandler": "^1.1.2",
     "lodash.kebabcase": "^4.1.1",
     "optimist": "^0.6.1",
