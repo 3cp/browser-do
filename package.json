@@ -41,6 +41,7 @@
     "ava": "^2.0.0",
     "browserify": "^16.2.3",
     "eslint": "^5.16.0",
+    "jasmine-core": "^3.4.0",
     "source-map-support": "^0.5.12",
     "standard-changelog": "^2.0.11",
     "utf8-stream": "0.0.0"

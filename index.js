@@ -11,6 +11,7 @@ const kebabCase = require('lodash.kebabcase');
 const getBrowser = require('./lib/get-browser');
 
 const reporterPath = path.join(__dirname, 'dist', 'reporter.js');
+const jasmineTapReporterPath = path.join(__dirname, 'jasmine-tap-reporter.js');
 try {
   fs.statSync(reporterPath);
 } catch (_) {
@@ -34,6 +35,16 @@ function runner (opts, data, output) {
 
   const isHtmlData = data.match(/^\s*</);
 
+  let jasminePath;
+  if (!isHtmlData && opts.jasmine) {
+    try {
+      jasminePath = path.dirname(require.resolve('jasmine-core/lib/jasmine-core/jasmine.js'));
+    } catch (e) {
+      console.error('To use -j/--jasmine, you need "npm i -D jasmine-core"');
+      process.exit(1);
+    }
+  }
+
   var mockHandler = opts.mock && require(path.resolve('./', opts.mock));
 
   var server = http.createServer(function (req, res) {
@@ -52,17 +63,19 @@ function runner (opts, data, output) {
       }
 
       if (req.url == '/') {
-        res.write(`<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-  </head>
-  <body>
-    <script src="/reporter.js"></script>
-    <script src="/bundle.js"></script>
-  </body>
-</html>`);
-        res.end();
+        res.write('<!DOCTYPE html><html><head><meta charset="utf-8">');
+        res.write('<script src="/reporter.js"></script>');
+
+        if (opts.jasmine) {
+          res.write('<link rel="stylesheet" href="/jasmine-core/jasmine.css">');
+          res.write('<script src="/jasmine-core/jasmine.js"></script>');
+          res.write('<script src="/jasmine-core/jasmine-html.js"></script>');
+          res.write('<script src="/jasmine-core/boot.js"></script>');
+          res.write('<script src="/jasmine-tap-reporter.js"></script>');
+        }
+
+        res.write('<script src="/bundle.js"></script>');
+        res.end('</head><body></body></html>');
         return;
       }
     }
@@ -77,6 +90,38 @@ function runner (opts, data, output) {
     if (req.url == '/reporter.js') {
       res.setHeader('content-type', 'application/javascript');
       fs.createReadStream(reporterPath).pipe(res);
+      return;
+    }
+
+    if (req.url == '/jasmine-tap-reporter.js') {
+      res.setHeader('content-type', 'application/javascript');
+      fs.createReadStream(jasmineTapReporterPath).pipe(res);
+      return;
+    }
+
+    const m = req.url.match(/^\/jasmine-core\/(.+)/);
+
+    if (m) {
+      const fn = m[1];
+      if (path.extname(fn) === '.js') {
+        res.setHeader('content-type', 'application/javascript');
+      } else if (path.extname(fn) === '.css') {
+        res.setHeader('content-type', 'text/css');
+      }
+
+      fs.createReadStream(path.join(jasminePath, fn)).pipe(res);
+      return;
+    }
+
+    if (req.url == '/jasmine-core/jasmine-html.js') {
+      res.setHeader('content-type', 'application/javascript');
+      fs.createReadStream(jasmineHtmlPath).pipe(res);
+      return;
+    }
+
+    if (req.url == '/jasmine-core/boot.js') {
+      res.setHeader('content-type', 'application/javascript');
+      fs.createReadStream(jasmineBootPath).pipe(res);
       return;
     }
 

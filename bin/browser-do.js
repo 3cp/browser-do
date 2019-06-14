@@ -2,9 +2,9 @@
 
 const run = require('../index');
 const optimist = require('optimist');
-const TapParser = require('tap-parser');
 const through = require('through');
 const {Writable} = require('stream');
+const tapFinished = require('../lib/tap-finished');
 
 const argv = optimist
   .usage(
@@ -29,9 +29,14 @@ const argv = optimist
   .describe('mock', 'Path to code to handle requests for mocking a dynamic back-end')
   .alias('m', 'mock')
 
-  .describe('keep-open', 'Leave the browser open for debugging after running tests. This is only needed for dealing with TAP test result.')
+  .describe('tap', 'Treat output as TAP test result, automatically exit when TAP finishes')
+  .alias('t', 'tap')
+
+  .describe('jasmine', 'Support jasmine test, convert jasmine output into TAP result, implicitly turns on option "tap", automatically exit when TAP finishes')
+  .alias('j', 'jasmine')
+
+  .describe('keep-open', 'Only for --tap and --jasmine, leave the browser open for debugging after running tests')
   .alias('k', 'keep-open')
-  .alias('keepOpen', 'keep-open')
 
   .describe('help', 'Print help')
   .alias('h', 'help')
@@ -59,39 +64,9 @@ readInput.on('finish', () => {
 
   const browserDo = run(argv, input, holdOutput);
 
-  const parser = new TapParser(results => {
-    if (!argv.keepOpen) {
-      process.exit(results.ok ? 0 : 1);
-    }
-  });
-
-  parser.on('bailout', m => {
-    console.error(m); // eslint-disable-line no-console
-    process.exit(1);
-  });
-
-  let count, done = 0;
-  parser.on('plan', p => {
-    count = p.end - p.start + 1;
-    check();
-  });
-
-  parser.on('assert', () => {
-    done++;
-    check();
-  });
-
-  let finished = false;
-  function check() {
-    if (finished) return;
-    if (!count || done < count) return;
-    finished = true;
-    setTimeout(() => parser.end(), 1000);
-  }
-
   // note output stream is piped to two different destinations.
   // 1. tap-parser to deal with tap results
-  holdOutput.pipe(parser);
+  if (argv.tap || argv.jasmine) holdOutput.pipe(tapFinished(argv['keep-open']));
   // 2. to stdout
   holdOutput.pipe(process.stdout);
 
