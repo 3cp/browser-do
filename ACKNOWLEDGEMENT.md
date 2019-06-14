@@ -1,4 +1,4 @@
-This software borrowed code from [karma-chrome-launcher](https://github.com/karma-runner/karma-chrome-launcher), [karma-firefox-launcher](https://github.com/karma-runner/karma-firefox-launcher), [karma-safari-launcher](https://github.com/karma-runner/karma-safari-launcher), [karma-ie-launcher](https://github.com/karma-runner/karma-ie-launcher), [jslegers/karma-edge-launcher](https://github.com/jslegers/karma-edge-launcher), [karma-electron](https://github.com/twolfson/karma-electron), [browser-run](https://github.com/juliangruber/browser-run), and [tape-run](https://github.com/juliangruber/tape-run). [browser-launcher](https://github.com/substack/browser-launcher).
+This software borrowed code from [karma-chrome-launcher](https://github.com/karma-runner/karma-chrome-launcher), [karma-firefox-launcher](https://github.com/karma-runner/karma-firefox-launcher), [karma-safari-launcher](https://github.com/karma-runner/karma-safari-launcher), [karma-ie-launcher](https://github.com/karma-runner/karma-ie-launcher), [jslegers/karma-edge-launcher](https://github.com/jslegers/karma-edge-launcher), [karma-electron](https://github.com/twolfson/karma-electron), [browser-run](https://github.com/juliangruber/browser-run), [tape-run](https://github.com/juliangruber/tape-run), [browser-launcher](https://github.com/substack/browser-launcher).
 
 Below are required notices from them.
 
@@ -82,4 +82,3 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-

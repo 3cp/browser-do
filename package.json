@@ -8,16 +8,20 @@
   },
   "files": [
     "index.js",
-    "lib"
+    "lib",
+    "dist",
+    "bin"
   ],
+  "bin": "./bin/browser-do",
   "scripts": {
     "lint": "eslint index.js lib test",
     "preversion": "npm test",
     "version": "standard-changelog && git add CHANGELOG.md",
     "postversion": "git push && git push --tags && npm publish",
-    "pretest": "npm run lint",
+    "pretest": "npm run lint && npm run build",
     "test": "ava",
-    "coverage": "nyc ava"
+    "build": "browserify reporter.js -o dist/reporter.js",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -35,15 +39,25 @@
   "homepage": "https://github.com/3cp/browser-do#readme",
   "devDependencies": {
     "ava": "^2.0.0",
+    "browserify": "^16.2.3",
     "eslint": "^5.16.0",
-    "nyc": "^14.1.1",
-    "standard-changelog": "^2.0.11"
+    "source-map-support": "^0.5.12",
+    "standard-changelog": "^2.0.11",
+    "utf8-stream": "0.0.0"
   },
   "dependencies": {
+    "duplexer": "^0.1.1",
     "electron": "^5.0.3",
+    "enstore": "^1.0.1",
+    "finalhandler": "^1.1.2",
     "lodash.kebabcase": "^4.1.1",
+    "optimist": "^0.6.1",
     "serve-static": "^1.14.1",
+    "server-destroy": "^1.0.1",
+    "tap-parser": "^9.3.2",
+    "through": "^2.3.8",
     "tmp": "^0.1.0",
-    "which": "^1.3.1"
+    "which": "^1.3.1",
+    "xhr-write-stream": "^0.1.2"
   }
 }
