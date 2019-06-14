@@ -3,6 +3,7 @@
 var run = require('../index');
 var optimist = require('optimist');
 const TapParser = require('tap-parser');
+const through = require('through');
 
 var argv = optimist
   .usage(
@@ -14,7 +15,7 @@ var argv = optimist
   .describe('browser', 'Browser to use. '
       + 'Always available: electron. '
       + 'Available if installed: '
-      + 'chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, electron, safari')
+      + 'chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, safari')
   .alias('browser', 'b')
   .default('browser', 'electron')
 
@@ -44,8 +45,9 @@ if (argv.help) {
   process.exit();
 }
 
-const browserDo = run(argv);
-process.stdin.pipe(browserDo);
+const holdOutput = through();
+
+const browserDo = run(argv, process.stdin, holdOutput);
 
 const parser = new TapParser(results => {
   if (!argv.keepOpen) {
@@ -77,11 +79,11 @@ function check() {
   setTimeout(() => parser.end(), 1000);
 }
 
-// note browser-do stream is piped to two different consumers.
+// note output stream is piped to two different consumers.
 // 1. tap-parser to deal with tap results
-browserDo.pipe(parser);
+holdOutput.pipe(parser);
 // 2. to stdout
-browserDo.pipe(process.stdout);
+holdOutput.pipe(process.stdout);
 
 process.on('exit', () => browserDo.stop());
 

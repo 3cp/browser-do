@@ -1,16 +1,12 @@
 /* eslint-disable no-console */
 const http = require('http');
 const path = require('path');
-const through = require('through');
-const duplex = require('duplexer');
 const fs = require('fs');
 const xws = require('xhr-write-stream')();
-const enstore = require('enstore');
 const launch = require('./lib/launch');
 const serveStatic = require('serve-static');
 const finalhandler = require('finalhandler');
 const destroyable = require('server-destroy');
-
 const kebabCase = require('lodash.kebabcase');
 const getBrowser = require('./lib/get-browser');
 
@@ -21,34 +17,21 @@ try {
   console.error('Reporter script missing.');
 }
 
-module.exports = function (opts) {
+module.exports = function (opts, input, output) {
   if (!opts) opts = {};
   if ('number' == typeof opts) opts = { port: opts };
   if (!opts.browser) opts.browser = 'electron';
   if (!opts.input) opts.input = 'javascript';
-  return runner(opts);
+  return runner(opts, input, output);
 };
 
-function runner (opts) {
+function runner (opts, input, output) {
   const browser = getBrowser(kebabCase(opts.browser));
 
   if (!browser) {
     console.error('No browser found for ' + opts.browser);
     process.exit(1);
   }
-
-  var empty = true;
-  var input = through(function (chunk) {
-    if (empty && chunk.toString().trim() != '') empty = false;
-    this.queue(chunk);
-  }, function () {
-    if (empty) dpl.emit('error', new Error('javascript required'));
-    this.queue(null);
-  });
-  var bundle = enstore();
-  input.pipe(bundle.createWriteStream());
-  var output = through();
-  var dpl = duplex(input, output);
 
   var mockHandler = opts.mock && require(path.resolve('./', opts.mock));
 
@@ -57,7 +40,7 @@ function runner (opts) {
       if (/^\/bundle\.js/.test(req.url)) {
         res.setHeader('content-type', 'application/javascript');
         res.setHeader('cache-control', 'no-cache');
-        bundle.createReadStream().pipe(res);
+        input.pipe(res);
         return;
       }
 
@@ -77,7 +60,7 @@ function runner (opts) {
       }
     } else if (opts.input === 'html') {
       if (req.url == '/') {
-        bundle.createReadStream().pipe(res);
+        input.pipe(res);
         return;
       }
     }
@@ -121,7 +104,9 @@ function runner (opts) {
       try {
         browserProc = launch('http://localhost:' + port, browser);
       } catch (err) {
-        return dpl.emit('error', err);
+        stop();
+        console.error(err);
+        process.exit(1);
       }
 
       browserProc.on('exit', (code, signal) => {
@@ -130,12 +115,11 @@ function runner (opts) {
         } catch (e) {
           // ignore
         }
-        dpl.emit('exit', code, signal);
       });
     });
   }
 
-  dpl.stop = function () {
+  function stop() {
     try {
       server.destroy();
     } catch (e) {
@@ -144,5 +128,5 @@ function runner (opts) {
     if (browserProc) browserProc.kill();
   };
 
-  return dpl;
+  return {stop};
 }
