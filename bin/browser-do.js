@@ -1,52 +1,26 @@
 #!/usr/bin/env node
 
 const run = require('../index');
-const optimist = require('optimist');
+const opts = require('commander');
 const through = require('through');
 const {Writable} = require('stream');
 const tapFinished = require('../lib/tap-finished');
 
-const argv = optimist
-  .usage(
-    'Run JavaScript in a browser.\n' +
-    'Write code to stdin and receive console output on stdout.\n' +
-    'Usage: $0 [OPTIONS]'
-  )
-
-  .describe('browser', 'Browser to use. '
-      + 'Always available: electron. '
-      + 'Available if installed: '
-      + 'chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, safari')
-  .alias('browser', 'b')
-  .default('browser', 'electron')
-
-  .describe('port', 'Starts listening on that port and waits for you to open a browser')
-  .alias('p', 'port')
-
-  .describe('static', 'Serve static assets from this directory')
-  .alias('s', 'static')
-
-  .describe('mock', 'Path to code to handle requests for mocking a dynamic back-end')
-  .alias('m', 'mock')
-
-  .describe('tap', 'Treat output as TAP test result, automatically exit when TAP finishes')
-  .alias('t', 'tap')
-
-  .describe('jasmine', 'Support jasmine test, convert jasmine output into TAP result, implicitly turns on option "tap", automatically exit when TAP finishes')
-  .alias('j', 'jasmine')
-
-  .describe('keep-open', 'Only for --tap and --jasmine, leave the browser open for debugging after running tests')
-  .alias('k', 'keep-open')
-
-  .describe('help', 'Print help')
-  .alias('h', 'help')
-
-  .argv;
-
-if (argv.help) {
-  optimist.showHelp();
-  process.exit();
-}
+opts
+  .version(require('../package.json').version)
+  .option('-b, --browser <name>', 'Browser to use, see available browsers below', 'electron')
+  .option('-p, --port', 'Starts listening on that port and waits for you to open a browser')
+  .option('-s, --static', 'Serve static assets from this directory')
+  .option('-m, --mock', 'Path to code to handle requests for mocking a dynamic back-end')
+  .option('-t, --tap', 'Treat output as TAP test result, automatically exit when TAP finishes')
+  .option('-j, --jasmine', 'Support jasmine test, convert jasmine output into TAP result, implicitly turns on option "tap", automatically exit when TAP finishes')
+  .option('-k, --keep-open', 'Only for --tap and --jasmine, leave the browser open for debugging after running tests')
+  .on('--help', function(){
+    console.log('')
+    console.log('Available browsers if installed (for -b, --browser <name>):');
+    console.log('  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, safari');
+  })
+  .parse(process.argv);
 
 const chunks = [];
 const readInput = new Writable({
@@ -58,15 +32,17 @@ const readInput = new Writable({
 
 process.stdin.pipe(readInput);
 
+const tap = opts.tap || opts.tape || opts.jasmine;
+
 readInput.on('finish', () => {
   const input = Buffer.concat(chunks).toString();
   const holdOutput = through();
 
-  const browserDo = run(argv, input, holdOutput);
+  const browserDo = run(opts, input, holdOutput);
 
   // note output stream is piped to two different destinations.
   // 1. tap-parser to deal with tap results
-  if (argv.tap || argv.jasmine) holdOutput.pipe(tapFinished(argv['keep-open']));
+  if (tap) holdOutput.pipe(tapFinished(opts.keepOpen));
   // 2. to stdout
   holdOutput.pipe(process.stdout);
 
