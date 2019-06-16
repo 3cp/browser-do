@@ -40,10 +40,13 @@
   "devDependencies": {
     "ava": "^2.0.0",
     "browserify": "^16.2.3",
+    "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "jasmine-core": "^3.4.0",
+    "mocha": "^6.1.4",
     "source-map-support": "^0.5.12",
     "standard-changelog": "^2.0.11",
+    "tape": "^4.10.2",
     "utf8-stream": "0.0.0"
   },
   "dependencies": {

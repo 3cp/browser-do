@@ -1,11 +1,15 @@
-var lines = 'not ok\n\
-ok\n\
-not ok\n\
-ok\n\
-ok\n\
-ok\n\
-1..6\n\
-'.split(/\r|\r\n|\n/);
+var lines = `1..2
+
+ok 1 some demo1
+
+ok 2 some demo2
+
+# tests 2
+
+# pass 2
+
+# fail 0
+`.split(/\r|\r\n|\n/);
 
 var iv = setInterval(function () {
   if (lines.length === 0) {

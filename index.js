@@ -36,12 +36,23 @@ function runner (opts, data, output) {
   const isHtmlData = data.match(/^\s*</);
 
   let jasminePath;
-  if (!isHtmlData && opts.jasmine) {
-    try {
-      jasminePath = path.dirname(require.resolve('jasmine-core/lib/jasmine-core/jasmine.js'));
-    } catch (e) {
-      console.error('To use -j/--jasmine, you need "npm i -D jasmine-core"');
-      process.exit(1);
+  let mochaPath;
+  if (!isHtmlData) {
+    if (opts.jasmine) {
+      try {
+        jasminePath = path.dirname(require.resolve('jasmine-core/lib/jasmine-core/jasmine.js'));
+      } catch (e) {
+        console.error('To use -j/--jasmine, you need "npm i -D jasmine-core"');
+        process.exit(1);
+      }
+    }
+    if (opts.mocha) {
+      try {
+        mochaPath = path.dirname(require.resolve('mocha/mocha.js'));
+      } catch (e) {
+        console.error('To use --mocha, you need "npm i -D mocha"');
+        process.exit(1);
+      }
     }
   }
 
@@ -68,14 +79,37 @@ function runner (opts, data, output) {
 
         if (opts.jasmine) {
           res.write('<link rel="stylesheet" href="/jasmine-core/jasmine.css">');
+        }
+
+        if (opts.mocha) {
+          res.write('<link rel="stylesheet" href="/mocha/mocha.css">');
+        }
+
+        res.write('</head><body>');
+
+        if (opts.jasmine) {
           res.write('<script src="/jasmine-core/jasmine.js"></script>');
           res.write('<script src="/jasmine-core/jasmine-html.js"></script>');
           res.write('<script src="/jasmine-core/boot.js"></script>');
           res.write('<script src="/jasmine-tap-reporter.js"></script>');
         }
 
+        if (opts.mocha) {
+          res.write('<div id="mocha"></div>');
+          res.write('<script src="/mocha/mocha.js"></script>');
+          res.write(`<script class="mocha-init">
+  mocha.setup({ui: "bdd", reporter: "${opts.keepOpen ? "html" : "tap"}"});
+  mocha.checkLeaks();
+</script>`);
+        }
+
         res.write('<script src="/bundle.js"></script>');
-        res.end('</head><body></body></html>');
+
+        if (opts.mocha) {
+          res.write('<script class="mocha-exec">mocha.run();</script>');
+        }
+
+        res.end('</body></html>');
         return;
       }
     }
@@ -113,15 +147,17 @@ function runner (opts, data, output) {
       return;
     }
 
-    if (req.url == '/jasmine-core/jasmine-html.js') {
-      res.setHeader('content-type', 'application/javascript');
-      fs.createReadStream(jasmineHtmlPath).pipe(res);
-      return;
-    }
+    const m2 = req.url.match(/^\/mocha\/(.+)/);
 
-    if (req.url == '/jasmine-core/boot.js') {
-      res.setHeader('content-type', 'application/javascript');
-      fs.createReadStream(jasmineBootPath).pipe(res);
+    if (m2) {
+      const fn = m2[1];
+      if (path.extname(fn) === '.js') {
+        res.setHeader('content-type', 'application/javascript');
+      } else if (path.extname(fn) === '.css') {
+        res.setHeader('content-type', 'text/css');
+      }
+
+      fs.createReadStream(path.join(mochaPath, fn)).pipe(res);
       return;
     }
 

@@ -13,8 +13,9 @@ opts
   .option('-s, --static', 'Serve static assets from this directory')
   .option('-m, --mock', 'Path to code to handle requests for mocking a dynamic back-end')
   .option('-t, --tap', 'Treat output as TAP test result, automatically exit when TAP finishes')
-  .option('-j, --jasmine', 'Support jasmine test, convert jasmine output into TAP result, implicitly turns on option "tap", automatically exit when TAP finishes')
-  .option('-k, --keep-open', 'Only for --tap and --jasmine, leave the browser open for debugging after running tests')
+  .option('-j, --jasmine', 'Support jasmine test, uses jasmine TAP reporter, implicitly turns on option "tap", automatically exit when TAP finishes')
+  .option('--mocha', 'Support mocha test, assumes BDD setup, uses TAP reporter, implicitly turns on option "tap", automatically exit when TAP finishes')
+  .option('-k, --keep-open', 'Only for --tap, --jasmine and --mocha, leave the browser open for debugging after running tests')
   .on('--help', function(){
     console.log('')
     console.log('Available browsers if installed (for -b, --browser <name>):');
@@ -29,7 +30,7 @@ opts
   })
   .parse(process.argv);
 
-const tap = opts.tap || opts.tape || opts.jasmine;
+const tap = opts.tap || opts.tape || opts.jasmine || opts.mocha;
 
 const chunks = [];
 const readInput = new Writable({
