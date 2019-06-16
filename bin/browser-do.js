@@ -4,7 +4,7 @@ const run = require('../index');
 const opts = require('commander');
 const through = require('through');
 const {Writable} = require('stream');
-const tapFinished = require('../lib/tap-finished');
+const tapParse = require('../lib/tap-parse');
 
 opts
   .version(require('../package.json').version)
@@ -50,7 +50,19 @@ readInput.on('finish', () => {
 
   // note output stream is piped to two different destinations.
   // 1. tap-parser to deal with tap results
-  if (tap) holdOutput.pipe(tapFinished(opts.keepOpen));
+  if (tap) {
+    tapParse(holdOutput, (err, passed) => {
+      if (err) {
+        console.error(err.message);
+      }
+
+      if (!opts.keepOpen) {
+        setTimeout(() => {
+          process.exit(passed ? 0 : 1);
+        }, 1000);
+      }
+    })
+  }
   // 2. to stdout
   holdOutput.pipe(process.stdout);
 
