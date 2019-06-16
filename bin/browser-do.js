@@ -42,6 +42,8 @@ const readInput = new Writable({
 
 process.stdin.pipe(readInput);
 
+let failed = false;
+
 readInput.on('finish', () => {
   const data = Buffer.concat(chunks).toString();
   const holdOutput = through();
@@ -52,6 +54,8 @@ readInput.on('finish', () => {
   // 1. tap-parser to deal with tap results
   if (tap) {
     tapParse(holdOutput, (err, passed) => {
+      failed = !passed;
+
       if (err) {
         console.error(err.message);
       }
@@ -70,6 +74,6 @@ readInput.on('finish', () => {
 
   process.on('SIGINT', () => {
     // manually call process.exit() so it will trigger 'exit' event.
-    process.exit();
+    process.exit(failed ? 1 : 0);
   });
 });

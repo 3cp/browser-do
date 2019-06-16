@@ -1,18 +1,15 @@
 # browser-do
 
-Alternative implementation of [browser-run](https://github.com/juliangruber/browser-run) and [tape-run](https://github.com/juliangruber/tape-run), with better Windows support.
+Alternative implementation of [browser-run](https://github.com/juliangruber/browser-run) and [tape-run](https://github.com/juliangruber/tape-run), with better Windows support, plus [mocha](https://mochajs.org), [jasmine](https://jasmine.github.io), [tape](https://github.com/substack/tape) support out of the box.
 
 browser-do offers
 
 1. browser launcher implementation borrowed from various karma browser launchers. Simpler and more reliable on Windows.
-2. [TAP output](https://en.wikipedia.org/wiki/Test_Anything_Protocol) support in one package.
+2. [TAP output](https://en.wikipedia.org/wiki/Test_Anything_Protocol) support.
 
-## Usage
+## Supported Browsers
 
-TODO keep opts same as much as possible, add one option (or make it default) for TAP output.
-
-
-### Supported Browsers
+electron is the always available default.
 
 |                    | macOS | Linux | Windows |
 |--------------------|-------|-------|---------|
@@ -26,3 +23,8 @@ TODO keep opts same as much as possible, add one option (or make it default) for
 | firefox-headless   | Yes   | Yes   | Yes     |
 | ie                 |       |       | Yes     |
 | safari             | Yes   |       |         |
+
+## Usage
+
+TODO keep opts same as much as possible, add one option (or make it default) for TAP output.
+
