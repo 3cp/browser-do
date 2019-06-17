@@ -8,11 +8,12 @@
   },
   "files": [
     "index.js",
+    "jasmine-tap-reporter.js",
     "lib",
     "dist",
     "bin"
   ],
-  "bin": "./bin/browser-do",
+  "bin": "./bin/browser-do.js",
   "scripts": {
     "lint": "eslint index.js lib test",
     "preversion": "npm test",
@@ -41,6 +42,7 @@
     "ava": "^2.0.0",
     "browserify": "^16.2.3",
     "chai": "^4.2.0",
+    "concat-stream": "^2.0.0",
     "eslint": "^5.16.0",
     "jasmine-core": "^3.4.0",
     "mocha": "^6.1.4",

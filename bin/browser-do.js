@@ -6,8 +6,8 @@ const run = require('../index');
 opts
   .version(require('../package.json').version)
   .option('-b, --browser <name>', 'Browser to use, see available browsers below', 'electron')
-  .option('-p, --port', 'Starts listening on that port and waits for you to open a browser')
-  .option('-s, --static', 'Serve static assets from this directory')
+  .option('-p, --port <port>', 'Starts listening on that port and waits for you to open a browser')
+  .option('-s, --static <path>', 'Serve static assets from this directory')
   .option('-m, --mock', 'Path to code to handle requests for mocking a dynamic back-end')
   .option('-t, --tap', 'Treat output as TAP test result, automatically exit when TAP finishes')
   .option('--jasmine', 'Support jasmine test, uses jasmine TAP reporter, implicitly turns on option "tap", automatically exit when TAP finishes')
