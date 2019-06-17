@@ -43,4 +43,8 @@ if (process.platform === 'darwin') {
       t.end();
     });
   });
+} else {
+  test('bypass safari on non-mac platform', t => {
+    t.pass('bypass safari on non-mac platform');
+  });
 }

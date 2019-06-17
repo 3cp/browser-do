@@ -97,7 +97,7 @@ test.cb('tapParse fails the fail with plan on top', t => {
 test.cb('tapParse never finish with no plan', t => {
   const inp = through();
 
-  const rl = tapParse(inp, (err, passed) => {
+  const rl = tapParse(inp, () => {
     t.fail('should not reach here');
     t.end();
   });
@@ -122,7 +122,7 @@ test.cb('tapParse never finish with no plan', t => {
     rl.close();
     t.pass('never calls cb');
     t.end();
-  })
+  });
 });
 
 test.cb('tapParse ignore fails on todo', t => {

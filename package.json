@@ -1,7 +1,7 @@
 {
   "name": "browser-do",
   "version": "0.0.1",
-  "description": "Alternative implementation of browser-run and tape-run, with better Windows support.",
+  "description": "Run JavaScript in a browser, forward browser console log to stdout, great for running unit tests in browser.",
   "main": "index.js",
   "engines": {
     "node": ">=8.9"

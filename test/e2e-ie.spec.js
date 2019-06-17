@@ -43,4 +43,8 @@ if (process.platform === 'win32') {
       t.end();
     });
   });
+} else {
+  test('bypass ie on non-win32 platform', t => {
+    t.pass('bypass ie on non-win32 platform');
+  });
 }

@@ -1,4 +1,4 @@
-// tap-run on top of browser-run
+/* eslint-disable no-console */
 const run = require('./lib/browser-run');
 const through = require('through');
 const {Writable} = require('stream');
@@ -39,11 +39,11 @@ module.exports = function(opts = {}) {
             process.exit(passed ? 0 : 1);
           }, 1000);
         }
-      })
+      });
     }
 
     function stop() {
-      browserDo.stop()
+      browserDo.stop();
     }
 
     process.on('exit', stop);

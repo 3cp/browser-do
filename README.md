@@ -1,6 +1,12 @@
 # browser-do
 
-Alternative implementation of [browser-run](https://github.com/juliangruber/browser-run) and [tape-run](https://github.com/juliangruber/tape-run), better Windows support, supports running [mocha](https://mochajs.org), [jasmine](https://jasmine.github.io), [tape](https://github.com/substack/tape) unit tests out of the box.
+Run JavaScript in a browser, forward browser console log to stdout, great for running unit tests in browser.
+
+```bash
+npm i -D browser-do
+```
+
+browser-do is alternative implementation of [browser-run](https://github.com/juliangruber/browser-run) and [tape-run](https://github.com/juliangruber/tape-run), better Windows support, supports running [mocha](https://mochajs.org), [jasmine](https://jasmine.github.io), [tape](https://github.com/substack/tape) unit tests out of the box.
 
 browser-do offers:
 
@@ -23,21 +29,34 @@ browserify test/all-my-mocha-tests.js | browser-do --mocha --browser chrome-head
 
 > Note browserify [doesn't support glob](https://github.com/browserify/browserify/pull/1205), that's why we cannot use `browserify 'test/**/*.spec.js'` here.
 
+The browserify step is just an example, you don't have to use browserify with browser-do. You can prepare a JavaScript bundle with any bundler, then just run it with browser-do.
+
+```bash
+cat dist/my-test-bundle.js | browser-do --tap # or jasmine/mocha
+# or
+browser-do --tap < dist/my-test-bundle.js
+```
+
+One more tip, because browser-do normalises tape/jasmine/mocha into TAP output, you can pipe to any TAP [pretty reporters](https://github.com/substack/tape#pretty-reporters)
+```bash
+browserify test/all-my-jasmine-tests.js | browser-do --jasmine | tap-dot
+```
+
 ## Supported Browsers
 
 electron is the always available default.
 
 |                    | macOS | Linux | Windows |
 |--------------------|-------|-------|---------|
+| electron (default) | Yes   | Yes   | Yes     |
 | chrome             | Yes   | Yes   | Yes     |
 | chrome-headless    | Yes   | Yes   | Yes     |
 | chromium           | Yes   | Yes   | Yes     |
 | chromium-headless  | Yes   | Yes   | Yes     |
-| edge               |       |       | Yes     |
-| electron (default) | Yes   | Yes   | Yes     |
 | firefox            | Yes   | Yes   | Yes     |
 | firefox-headless   | Yes   | Yes   | Yes     |
 | ie                 |       |       | Yes     |
+| edge               |       |       | Yes     |
 | safari             | Yes   |       |         |
 
 ## Usage

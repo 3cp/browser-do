@@ -1,3 +1,4 @@
+/* global describe, it, expect */
 describe('scope1', function() {
   it('test1', function() {
     expect(1).toBe(1);
