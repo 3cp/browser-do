@@ -42,3 +42,31 @@ test.serial.cb('browser-do detects failed mocha tests', t => {
     t.end();
   });
 });
+
+test.serial.cb('browser-do supports static assets and html input', t => {
+  exec('cat test/_jasmine-good.html | node bin/browser-do.js --jasmine --static test/samples -b chrome-headless', error => {
+    t.falsy(error);
+    t.end();
+  });
+});
+
+test.serial.cb('browser-do supports static assets and html input, with failed tests', t => {
+  exec('cat test/_jasmine-bad.html | node bin/browser-do.js --jasmine --static test/samples -b chrome-headless', error => {
+    t.truthy(error);
+    t.end();
+  });
+});
+
+test.serial.cb('browser-do supports mock and html input', t => {
+  exec('cat test/_mock-jasmine-good.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b chrome-headless', error => {
+    t.falsy(error);
+    t.end();
+  });
+});
+
+test.serial.cb('browser-do supports mock and html input, with failed tests', t => {
+  exec('cat test/_mock-jasmine-bad.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b chrome-headless', error => {
+    t.truthy(error);
+    t.end();
+  });
+});

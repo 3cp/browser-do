@@ -43,6 +43,34 @@ if (process.platform === 'win32') {
       t.end();
     });
   });
+
+  test.serial.cb('browser-do supports static assets and html input', t => {
+    exec('cat test/_jasmine-good.html | node bin/browser-do.js --jasmine --static test/samples -b edge', error => {
+      t.falsy(error);
+      t.end();
+    });
+  });
+
+  test.serial.cb('browser-do supports static assets and html input, with failed tests', t => {
+    exec('cat test/_jasmine-bad.html | node bin/browser-do.js --jasmine --static test/samples -b edge', error => {
+      t.truthy(error);
+      t.end();
+    });
+  });
+
+  test.serial.cb('browser-do supports mock and html input', t => {
+    exec('cat test/_mock-jasmine-good.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b edge', error => {
+      t.falsy(error);
+      t.end();
+    });
+  });
+
+  test.serial.cb('browser-do supports mock and html input, with failed tests', t => {
+    exec('cat test/_mock-jasmine-bad.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b edge', error => {
+      t.truthy(error);
+      t.end();
+    });
+  });
 } else {
   test('bypass edge on non-win32 platform', t => {
     t.pass('bypass edge on non-win32 platform');

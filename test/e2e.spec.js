@@ -61,3 +61,17 @@ test.serial.cb('browser-do supports static assets and html input, with failed te
     t.end();
   });
 });
+
+test.serial.cb('browser-do supports mock and html input', t => {
+  exec('cat test/_mock-jasmine-good.html | node bin/browser-do.js --jasmine --mock test/_mock.js', error => {
+    t.falsy(error);
+    t.end();
+  });
+});
+
+test.serial.cb('browser-do supports mock and html input, with failed tests', t => {
+  exec('cat test/_mock-jasmine-bad.html | node bin/browser-do.js --jasmine --mock test/_mock.js', error => {
+    t.truthy(error);
+    t.end();
+  });
+});

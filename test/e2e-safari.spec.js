@@ -43,6 +43,34 @@ if (process.platform === 'darwin') {
       t.end();
     });
   });
+
+  test.serial.cb('browser-do supports static assets and html input', t => {
+    exec('cat test/_jasmine-good.html | node bin/browser-do.js --jasmine --static test/samples -b safari', error => {
+      t.falsy(error);
+      t.end();
+    });
+  });
+
+  test.serial.cb('browser-do supports static assets and html input, with failed tests', t => {
+    exec('cat test/_jasmine-bad.html | node bin/browser-do.js --jasmine --static test/samples -b safari', error => {
+      t.truthy(error);
+      t.end();
+    });
+  });
+
+  test.serial.cb('browser-do supports mock and html input', t => {
+    exec('cat test/_mock-jasmine-good.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b safari', error => {
+      t.falsy(error);
+      t.end();
+    });
+  });
+
+  test.serial.cb('browser-do supports mock and html input, with failed tests', t => {
+    exec('cat test/_mock-jasmine-bad.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b safari', error => {
+      t.truthy(error);
+      t.end();
+    });
+  });
 } else {
   test('bypass safari on non-mac platform', t => {
     t.pass('bypass safari on non-mac platform');
