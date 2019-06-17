@@ -68,13 +68,15 @@ There is some tolerance on browser name, for example:
 all work just like -b chrome-headless
 ```
 
-## Custom html file
+### Custom html file
 
-Your can provide a custom html file for browser-do to use. Keep in mind though that it always needs to have `<script src="/reporter.js"></script>` above other script tags so browser-do is able to properly forward your `console.log`s etc to the terminal.
+Your can provide a custom html file for browser-do to use. Keep in mind it always needs to have `<script src="/reporter.js"></script>` above other script tags so browser-do is able to properly forward your `console.log`s etc to the terminal.
 
-Different from browser-run, you don't need `--input html`, browser-do detects the input automatically.
+> Different from browser-run, you don't need `--input html`, browser-do detects the input automatically.
 
-## Dynamic back-end mock
+> You would need to combine custom html file with `--static some-dir` or `--mock mock-code.js` in order to have some way to load your JavaScript code.
+
+### Dynamic back-end mock
 
 By using `--mock mock.js` (or `{ mock: 'mock.js'}` in code) you can provide a custom server-side implementation and handle all requests that are sent to paths beginning with `/mock`
 
@@ -104,7 +106,7 @@ browser.pipe(process.stdout);
 browser.end('console.log(location); window.close()');
 ```
 
-Note `window.close()` will quit the default electron browser, but it would not work with some other browsers. Because many browsers reject `window.close()` for a window not opened by JavaScript. (In browser perspective, it opened a URL, although browser-do programmatically did that.)
+> Note `window.close()` will quit the default electron browser, but it would not work with some other browsers. Because many browsers reject `window.close()` for a window not opened by JavaScript. (In browser perspective, it opened a URL, although browser-do programmatically did that.)
 
 ### Close browser window by code
 
@@ -120,11 +122,11 @@ browser.end('console.log(location);');
 setTimeout(function() { browser.stop(); }, 5000);
 ```
 
-## Unit tests support
+### Unit tests support
 
-browser-do conveniently supports [mocha](https://mochajs.org), [jasmine](https://jasmine.github.io), [tape](https://github.com/substack/tape) unit tests out of the box.
+browser-do conveniently supports running [mocha](https://mochajs.org), [jasmine](https://jasmine.github.io), [tape](https://github.com/substack/tape) unit tests out of the box.
 
-### Tape
+#### Tape
 
 Tape is easy to support, as it doesn't pollute global variables. All browser-do needs to do is to parse [TAP output](http://testanything.org) and automatically exit when tests finish.
 
@@ -132,7 +134,7 @@ Tape is easy to support, as it doesn't pollute global variables. All browser-do 
 browserify some-tap-test.js | browser-do -t # or --tap
 ```
 
-### Jasmine
+#### Jasmine
 
 browser-do helps jasmine test by setup global vars before running your code.
 
@@ -162,7 +164,7 @@ FYI, here is the special `index.html` browser-do provided for jasmine. Showing h
 </html>
 ```
 
-### Mocha
+#### Mocha
 
 browser-do helps mocha test by setup global vars before running your code.
 
