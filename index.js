@@ -1,215 +1,59 @@
-/* eslint-disable no-console */
-const http = require('http');
-const path = require('path');
-const fs = require('fs');
-const xws = require('xhr-write-stream')();
-const launch = require('./lib/launch');
-const serveStatic = require('serve-static');
-const finalhandler = require('finalhandler');
-const destroyable = require('server-destroy');
-const kebabCase = require('lodash.kebabcase');
-const getBrowser = require('./lib/get-browser');
+// tap-run on top of browser-run
+const run = require('./lib/browser-run');
+const through = require('through');
+const {Writable} = require('stream');
+const duplex = require('duplexer');
+const tapParse = require('./lib/tap-parse');
 
-const reporterPath = path.join(__dirname, 'dist', 'reporter.js');
-const jasmineTapReporterPath = path.join(__dirname, 'jasmine-tap-reporter.js');
-try {
-  fs.statSync(reporterPath);
-} catch (_) {
-  console.error('Reporter script missing.');
-}
+module.exports = function(opts) {
+  const tap = opts.tap || opts.tape || opts.jasmine || opts.mocha;
 
-module.exports = function (opts, data, output) {
-  if (!opts) opts = {};
-  if ('number' == typeof opts) opts = { port: opts };
-  if (!opts.browser) opts.browser = 'electron';
-  return runner(opts, data, output);
-};
-
-function runner (opts, data, output) {
-  const browser = getBrowser(kebabCase(opts.browser));
-
-  if (!browser) {
-    console.error('No browser found for ' + opts.browser);
-    process.exit(1);
-  }
-
-  const isHtmlData = data.match(/^\s*</);
-
-  let jasminePath;
-  let mochaPath;
-  if (!isHtmlData) {
-    if (opts.jasmine) {
-      try {
-        jasminePath = path.dirname(require.resolve('jasmine-core/lib/jasmine-core/jasmine.js'));
-      } catch (e) {
-        console.error('To use -j/--jasmine, you need "npm i -D jasmine-core"');
-        process.exit(1);
-      }
+  const chunks = [];
+  const readInput = new Writable({
+    write(chunk, enc, cb) {
+      chunks.push(chunk);
+      cb();
     }
-    if (opts.mocha) {
-      try {
-        mochaPath = path.dirname(require.resolve('mocha/mocha.js'));
-      } catch (e) {
-        console.error('To use --mocha, you need "npm i -D mocha"');
-        process.exit(1);
-      }
-    }
-  }
-
-  var mockHandler = opts.mock && require(path.resolve('./', opts.mock));
-
-  var server = http.createServer(function (req, res) {
-    if (isHtmlData) {
-      if (req.url == '/') {
-        res.end(data);
-        return;
-      }
-    } else {
-      // JavaScript data
-      if (/^\/bundle\.js/.test(req.url)) {
-        res.setHeader('content-type', 'application/javascript');
-        res.setHeader('cache-control', 'no-cache');
-        res.end(data);
-        return;
-      }
-
-      if (req.url == '/') {
-        res.write('<!DOCTYPE html><html><head><meta charset="utf-8">');
-        res.write('<script src="/reporter.js"></script>');
-
-        if (opts.jasmine) {
-          res.write('<link rel="stylesheet" href="/jasmine-core/jasmine.css">');
-        }
-
-        if (opts.mocha) {
-          res.write('<link rel="stylesheet" href="/mocha/mocha.css">');
-        }
-
-        res.write('</head><body>');
-
-        if (opts.jasmine) {
-          res.write('<script src="/jasmine-core/jasmine.js"></script>');
-          res.write('<script src="/jasmine-core/jasmine-html.js"></script>');
-          res.write('<script src="/jasmine-core/boot.js"></script>');
-          res.write('<script src="/jasmine-tap-reporter.js"></script>');
-        }
-
-        if (opts.mocha) {
-          res.write('<div id="mocha"></div>');
-          res.write('<script src="/mocha/mocha.js"></script>');
-          res.write(`<script class="mocha-init">
-  mocha.setup({ui: "bdd", reporter: "${opts.keepOpen ? "html" : "tap"}"});
-  mocha.checkLeaks();
-</script>`);
-        }
-
-        res.write('<script src="/bundle.js"></script>');
-
-        if (opts.mocha) {
-          res.write('<script class="mocha-exec">mocha.run();</script>');
-        }
-
-        res.end('</body></html>');
-        return;
-      }
-    }
-
-    if (req.url == '/xws') {
-      req.pipe(xws(function (stream) {
-        stream.pipe(output);
-      }));
-      return req.on('end', res.end.bind(res));
-    }
-
-    if (req.url == '/reporter.js') {
-      res.setHeader('content-type', 'application/javascript');
-      fs.createReadStream(reporterPath).pipe(res);
-      return;
-    }
-
-    if (req.url == '/jasmine-tap-reporter.js') {
-      res.setHeader('content-type', 'application/javascript');
-      fs.createReadStream(jasmineTapReporterPath).pipe(res);
-      return;
-    }
-
-    const m = req.url.match(/^\/jasmine-core\/(.+)/);
-
-    if (m) {
-      const fn = m[1];
-      if (path.extname(fn) === '.js') {
-        res.setHeader('content-type', 'application/javascript');
-      } else if (path.extname(fn) === '.css') {
-        res.setHeader('content-type', 'text/css');
-      }
-
-      fs.createReadStream(path.join(jasminePath, fn)).pipe(res);
-      return;
-    }
-
-    const m2 = req.url.match(/^\/mocha\/(.+)/);
-
-    if (m2) {
-      const fn = m2[1];
-      if (path.extname(fn) === '.js') {
-        res.setHeader('content-type', 'application/javascript');
-      } else if (path.extname(fn) === '.css') {
-        res.setHeader('content-type', 'text/css');
-      }
-
-      fs.createReadStream(path.join(mochaPath, fn)).pipe(res);
-      return;
-    }
-
-    if (opts.static) {
-      serveStatic(opts.static)(req, res, finalhandler(req, res));
-      return;
-    }
-
-    if (mockHandler && '/mock' === req.url.substr(0,5)){
-      return mockHandler(req, res);
-    }
-
-    res.end('not supported');
   });
-  destroyable(server);
 
-  let browserProc;
+  const holdOutput = through();
+  const dpl = duplex(readInput, holdOutput);
 
-  if (opts.port) {
-    server.listen(opts.port);
-  } else {
-    server.listen(function () {
-      var address = server.address();
-      if (!address) return; // already closed
-      var port = address.port;
+  let failed = false;
 
-      try {
-        browserProc = launch('http://localhost:' + port, browser);
-      } catch (err) {
-        stop();
-        console.error(err);
-        process.exit(1);
-      }
+  readInput.on('finish', () => {
+    const data = Buffer.concat(chunks).toString();
 
-      browserProc.on('exit', (code, signal) => {
-        try {
-          server.destroy();
-        } catch (e) {
-          // ignore
+    const browserDo = run(opts, data, holdOutput);
+
+    if (tap) {
+      tapParse(holdOutput, (err, passed) => {
+        failed = !passed;
+
+        if (err) {
+          console.error(err.message);
         }
-      });
-    });
-  }
 
-  function stop() {
-    try {
-      server.destroy();
-    } catch (e) {
-      // ignore
+        if (!opts.keepOpen) {
+          setTimeout(() => {
+            process.exit(passed ? 0 : 1);
+          }, 1000);
+        }
+      })
     }
-    if (browserProc) browserProc.kill();
-  };
 
-  return {stop};
-}
+    function stop() {
+      browserDo.stop()
+    }
+
+    process.on('exit', stop);
+    dpl.stop = stop;
+
+    process.on('SIGINT', () => {
+      // manually call process.exit() so it will trigger 'exit' event.
+      process.exit(failed ? 1 : 0);
+    });
+  });
+
+  return dpl;
+};
