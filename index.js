@@ -5,7 +5,7 @@ const {Writable} = require('stream');
 const duplex = require('duplexer');
 const tapParse = require('./lib/tap-parse');
 
-module.exports = function(opts) {
+module.exports = function(opts = {}) {
   const tap = opts.tap || opts.tape || opts.jasmine || opts.mocha;
 
   const chunks = [];
