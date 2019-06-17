@@ -25,7 +25,7 @@ function load(name) {
 }
 
 function _getBrowser(name) {
-  return getBrowser(name, {_load: load, _fileExists: () => true});
+  return getBrowser(name, load);
 }
 
 test('getBrowser returns nothing for missing browser', t => {
