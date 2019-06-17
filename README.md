@@ -21,7 +21,7 @@ browserify test/all-my-jasmine-tests.js | browser-do --jasmine
 browserify test/all-my-mocha-tests.js | browser-do --mocha --browser chrome-headless
 ```
 
-Note browserify [doesn't support glob](https://github.com/browserify/browserify/pull/1205), that's why we cannot use `browserify 'test/**/*.spec.js'` here.
+> Note browserify [doesn't support glob](https://github.com/browserify/browserify/pull/1205), that's why we cannot use `browserify 'test/**/*.spec.js'` here.
 
 ## Supported Browsers
 
@@ -85,11 +85,11 @@ mock.js needs to export a function that accepts `req` and `res` arguments for ha
 Example:
 
 ```js
-module.exports = function(req,res){
+module.exports = function(req, res){
   if (req.url === '/mock/echo') {
-    req.pipe(res)
+    req.pipe(res);
   }
-}
+};
 ```
 
 ### Run browser-do in code
