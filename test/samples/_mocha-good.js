@@ -1,5 +1,5 @@
 /* global describe, it */
-const {expect} = require('chai');
+const expect = require('chai').expect;
 
 describe('scope1', function() {
   it('test1', function() {
