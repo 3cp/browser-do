@@ -66,7 +66,7 @@ if (process.platform === 'win32') {
   test('getBrowser gets browser on win32', t => {
     t.deepEqual(_getBrowser('chrome-headless'), {
       args: ['--enable-automation', '--headless', '--disable-gpu'],
-      path: '/win/chrome'
+      path: '/win/chrome.exe'
     });
   });
 }
