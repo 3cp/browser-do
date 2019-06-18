@@ -47,7 +47,6 @@
     "mocha": "^6.1.4",
     "source-map-support": "^0.5.12",
     "standard-changelog": "^2.0.11",
-    "tap-dot": "^2.0.0",
     "tape": "^4.10.2",
     "utf8-stream": "0.0.0"
   },
