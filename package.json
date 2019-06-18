@@ -20,7 +20,7 @@
     "version": "standard-changelog && git add CHANGELOG.md",
     "postversion": "git push && git push --tags && npm publish",
     "pretest": "npm run lint && npm run build",
-    "test": "ava --serial",
+    "test": "tape \"test/**/*.spec.js\"",
     "build": "browserify reporter.js -o dist/reporter.js",
     "prepare": "npm run build"
   },
@@ -39,7 +39,6 @@
   },
   "homepage": "https://github.com/3cp/browser-do#readme",
   "devDependencies": {
-    "ava": "^2.0.0",
     "browserify": "^16.2.3",
     "chai": "^4.2.0",
     "concat-stream": "^2.0.0",

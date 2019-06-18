@@ -1,12 +1,12 @@
-import test from 'ava';
-import tapParse from '../lib/tap-parse';
-import through from 'through';
+const test = require('tape');
+const tapParse = require('../lib/tap-parse');
+const through = require('through');
 
-test.cb('tapParse passes all ok', t => {
+test('tapParse passes all ok', t => {
   const inp = through();
 
   tapParse(inp, (err, passed) => {
-    t.is(err, null);
+    t.equal(err, null);
     t.true(passed);
     t.end();
   });
@@ -22,11 +22,11 @@ test.cb('tapParse passes all ok', t => {
   ].forEach(l => inp.write(l + '\n'));
 });
 
-test.cb('tapParse passes all ok with plan at top', t => {
+test('tapParse passes all ok with plan at top', t => {
   const inp = through();
 
   tapParse(inp, (err, passed) => {
-    t.is(err, null);
+    t.equal(err, null);
     t.true(passed);
     t.end();
   });
@@ -40,11 +40,11 @@ test.cb('tapParse passes all ok with plan at top', t => {
   ].forEach(l => inp.write(l + '\r\n'));
 });
 
-test.cb('tapParse fails the fail', t => {
+test('tapParse fails the fail', t => {
   const inp = through();
 
   tapParse(inp, (err, passed) => {
-    t.is(err, null);
+    t.equal(err, null);
     t.false(passed);
     t.end();
   });
@@ -67,11 +67,11 @@ test.cb('tapParse fails the fail', t => {
   ].forEach(l => inp.write(l + '\n'));
 });
 
-test.cb('tapParse fails the fail with plan on top', t => {
+test('tapParse fails the fail with plan on top', t => {
   const inp = through();
 
   tapParse(inp, (err, passed) => {
-    t.is(err, null);
+    t.equal(err, null);
     t.false(passed);
     t.end();
   });
@@ -94,7 +94,7 @@ test.cb('tapParse fails the fail with plan on top', t => {
   ].forEach(l => inp.write(l + '\n'));
 });
 
-test.cb('tapParse never finish with no plan', t => {
+test('tapParse never finish with no plan', t => {
   const inp = through();
 
   const rl = tapParse(inp, () => {
@@ -125,11 +125,11 @@ test.cb('tapParse never finish with no plan', t => {
   });
 });
 
-test.cb('tapParse ignore fails on todo', t => {
+test('tapParse ignore fails on todo', t => {
   const inp = through();
 
   tapParse(inp, (err, passed) => {
-    t.is(err, null);
+    t.equal(err, null);
     t.true(passed);
     t.end();
   });
@@ -151,11 +151,11 @@ test.cb('tapParse ignore fails on todo', t => {
   ].forEach(l => inp.write(l + '\n'));
 });
 
-test.cb('tapParse ignore fails on skip', t => {
+test('tapParse ignore fails on skip', t => {
   const inp = through();
 
   tapParse(inp, (err, passed) => {
-    t.is(err, null);
+    t.equal(err, null);
     t.true(passed);
     t.end();
   });
@@ -177,12 +177,12 @@ test.cb('tapParse ignore fails on skip', t => {
   ].forEach(l => inp.write(l + '\n'));
 });
 
-test.cb('tapParse throws error on Bail out!', t => {
+test('tapParse throws error on Bail out!', t => {
   const inp = through();
 
   tapParse(inp, (err, passed) => {
-    t.is(err.message, 'Bail out! lorem');
-    t.is(passed, undefined);
+    t.equal(err.message, 'Bail out! lorem');
+    t.equal(passed, undefined);
     t.end();
   });
 
@@ -195,12 +195,12 @@ test.cb('tapParse throws error on Bail out!', t => {
   ].forEach(l => inp.write(l + '\n'));
 });
 
-test.cb('tapParse throws error on unsupported TAP version!', t => {
+test('tapParse throws error on unsupported TAP version!', t => {
   const inp = through();
 
   tapParse(inp, (err, passed) => {
-    t.is(err.message, 'TAP version 14 is not supported');
-    t.is(passed, undefined);
+    t.equal(err.message, 'TAP version 14 is not supported');
+    t.equal(passed, undefined);
     t.end();
   });
 

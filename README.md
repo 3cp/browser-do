@@ -14,7 +14,7 @@ browser-do offers:
 2. [TAP output](http://testanything.org) support.
 3. Kept browser-run options `-p, --port`, `-b, --browser browser-name`, `-s, --static`, and `-m, --mock`.
 4. Removed `--input html` as browser-do auto detects JavaScript or HTML input.
-5. Removed `-n, --node` and `--basedir` as browser-do doesn't want to support Nodejs code. (In browser-run, they only work with electron anyway)
+5. Removed `-n, --node` and `--basedir` as browser-do doesn't want to support Node.js code. (In original browser-run, Node.js code only work with electron anyway)
 6. Added options `-t, --tap` to handle generic TAP output.
 7. Added `--jasmine` and `--mocha` to conveniently support jasmine/mocha (setup global vars, use TAP reporter).
 8. Added `-k, --keep-open` (inherited from tap-run) to keep browser running after TAP finished.

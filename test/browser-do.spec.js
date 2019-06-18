@@ -1,24 +1,24 @@
-import test from 'ava';
-import concat from 'concat-stream';
-import run from '../index';
+const test = require('tape');
+const concat = require('concat-stream');
+const run = require('../index');
 
-test.serial.cb('browser-do rans javascript code', t => {
+test('browser-do rans javascript code', t => {
   const browser = run();
   browser.pipe(concat(data => {
-    t.is(data.toString(), 'hello\n');
+    t.equal(data.toString(), 'hello\n');
     t.end();
   }));
   browser.on('error', t.fail);
   browser.end('console.log("hello");window.close();');
 });
 
-test.serial.cb('browser-do rans javascript, close by api', t => {
+test('browser-do rans javascript, close by api', t => {
   const browser = run();
   browser.pipe(concat(data => {
-    t.is(data.toString(), 'hello\n');
+    t.equal(data.toString(), 'hello\n');
     t.end();
   }));
   browser.on('error', t.fail);
   browser.end('console.log("hello");');
-  setTimeout(() => browser.stop(), 9000);
+  setTimeout(() => browser.stop(), 6000);
 });

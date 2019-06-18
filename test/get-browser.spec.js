@@ -1,5 +1,5 @@
-import test from 'ava';
-import getBrowser from '../lib/get-browser';
+const test = require('tape');
+const getBrowser = require('../lib/get-browser');
 
 function load(name) {
   if (name === 'safari') {
@@ -29,12 +29,14 @@ function _getBrowser(name) {
 }
 
 test('getBrowser returns nothing for missing browser', t => {
-  t.falsy(_getBrowser('na'));
+  t.notOk(_getBrowser('na'));
+  t.end();
 });
 
 if (process.platform === 'linux') {
   test('getBrowser returns nothing missing browser on linux', t => {
-    t.falsy(_getBrowser('safari'));
+    t.notOk(_getBrowser('safari'));
+    t.end();
   });
 
   test('getBrowser gets browser on linux', t => {
@@ -42,6 +44,7 @@ if (process.platform === 'linux') {
       args: ['--enable-automation', '--headless', '--disable-gpu'],
       path: '/linux/chrome'
     });
+    t.end();
   });
 }
 
@@ -55,12 +58,14 @@ if (process.platform === 'darwin') {
       args: ['--enable-automation', '--headless', '--disable-gpu'],
       path: '/mac/chrome'
     });
+    t.end();
   });
 }
 
 if (process.platform === 'win32') {
   test('getBrowser returns nothing missing browser on win32', t => {
-    t.falsy(_getBrowser('safari'));
+    t.notOk(_getBrowser('safari'));
+    t.end();
   });
 
   test('getBrowser gets browser on win32', t => {
@@ -68,5 +73,6 @@ if (process.platform === 'win32') {
       args: ['--enable-automation', '--headless', '--disable-gpu'],
       path: '/win/chrome.exe'
     });
+    t.end();
   });
 }
