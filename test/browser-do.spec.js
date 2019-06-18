@@ -4,7 +4,7 @@ const run = require('../index');
 
 if (process.platform === 'win32' && process.env['TRAVIS_OS_NAME'] === 'windows') {
   test('travis windows box', t => {
-    t.pass('skip browser-do code test on travis-ci windows box')
+    t.pass('skip browser-do code test on travis-ci windows box');
     t.end();
   });
 } else {
