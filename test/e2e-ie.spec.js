@@ -1,7 +1,7 @@
 const test = require('tape');
 const {exec} = require('child_process');
 
-if (process.platform === 'win32' && process.env['TRAVIS_OS_NAME'] !== 'windows') {
+if (process.platform === 'win32') {
   test('browser-do:ie detects passed tape tests', t => {
     exec('npx browserify test/samples/_tape-good.js | node bin/browser-do.js --tap -b ie', error => {
       t.notOk(error);
@@ -72,8 +72,8 @@ if (process.platform === 'win32' && process.env['TRAVIS_OS_NAME'] !== 'windows')
     });
   });
 } else {
-  test('bypass ie on non-win32 platform and travis-ci windows box', t => {
-    t.pass('bypass ie on non-win32 platform and travis-ci windows box');
+  test('bypass ie on non-win32 platform', t => {
+    t.pass('bypass ie on non-win32 platform');
     t.end();
   });
 }
