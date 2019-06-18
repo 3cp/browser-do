@@ -254,7 +254,7 @@ In your special html file:
 1. you need `<script src="/reporter.js"></script>` above any script tags.
 2. you need retain most of the above html file, just modify the mocha setup part.
 2. you need something like `<script src="/dist/my-prepared-bundle.js"></script>` to replace `<script src="/bundle.js"></script>`, you need to make sure you generated that bundle file before using browser-do.
-3. The `--static .` option is to let browser-do to access all the local files including the .
+3. The `--static .` option is to let browser-do to access all the local files including the `dist/my-prepared-bundle.js`.
 
 ## CI setup
 
