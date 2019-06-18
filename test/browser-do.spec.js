@@ -2,6 +2,8 @@ const test = require('tape');
 const concat = require('concat-stream');
 const run = require('../index');
 
+// something is not right on travis windows.
+// tests here have no issue on a local windows box, but time out on travis windows box.
 if (process.platform === 'win32' && process.env['TRAVIS_OS_NAME'] === 'windows') {
   test('travis windows box', t => {
     t.pass('skip browser-do code test on travis-ci windows box');
