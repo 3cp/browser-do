@@ -19,16 +19,17 @@ module.exports = function(opts = {}) {
   const holdOutput = through();
   const dpl = duplex(readInput, holdOutput);
 
-  let failed = false;
+  dpl.failed = false;
+  let browserDo;
+  dpl.stop = () => browserDo && browserDo.stop();
 
   readInput.on('finish', () => {
     const data = Buffer.concat(chunks).toString();
-
-    const browserDo = run(opts, data, holdOutput);
+    browserDo = run(opts, data, holdOutput);
 
     if (tap) {
       tapParse(holdOutput, (err, passed) => {
-        failed = !passed;
+        dpl.failed = !passed;
 
         if (err) {
           console.error(err.message);
@@ -36,23 +37,12 @@ module.exports = function(opts = {}) {
 
         if (!opts.keepOpen) {
           setTimeout(() => {
-            process.exit(passed ? 0 : 1);
+            dpl.stop();
+            dpl.emit('exit', dpl.failed ? 1 : 0);
           }, 1000);
         }
       });
     }
-
-    function stop() {
-      browserDo.stop();
-    }
-
-    process.on('exit', stop);
-    dpl.stop = stop;
-
-    process.on('SIGINT', () => {
-      // manually call process.exit() so it will trigger 'exit' event.
-      process.exit(failed ? 1 : 0);
-    });
   });
 
   return dpl;

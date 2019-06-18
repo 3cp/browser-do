@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const opts = require('commander');
-const run = require('../index');
+const browserDo = require('../index');
 
 opts
   .version(require('../package.json').version)
@@ -27,6 +27,15 @@ opts
   })
   .parse(process.argv);
 
+const run = browserDo(opts);
 process.stdin
-  .pipe(run(opts))
+  .pipe(run)
   .pipe(process.stdout);
+
+run.on('exit', code => process.exit(code));
+process.on('exit', () => run.stop());
+
+process.on('SIGINT', () => {
+  // manually call process.exit() so it will trigger 'exit' event.
+  process.exit(run.failed ? 1 : 0);
+});
