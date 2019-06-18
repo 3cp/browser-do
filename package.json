@@ -20,7 +20,7 @@
     "version": "standard-changelog && git add CHANGELOG.md",
     "postversion": "git push && git push --tags && npm publish",
     "pretest": "npm run lint && npm run build",
-    "test": "ava",
+    "test": "ava --serial",
     "build": "browserify reporter.js -o dist/reporter.js",
     "prepare": "npm run build"
   },

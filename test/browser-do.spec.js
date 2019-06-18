@@ -20,5 +20,5 @@ test.serial.cb('browser-do rans javascript, close by api', t => {
   }));
   browser.on('error', t.fail);
   browser.end('console.log("hello");');
-  setTimeout(() => browser.stop(), 3000);
+  setTimeout(() => browser.stop(), 9000);
 });
