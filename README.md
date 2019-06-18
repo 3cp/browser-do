@@ -1,4 +1,4 @@
-# browser-do
+# browser-do [![Build Status](https://travis-ci.org/3cp/browser-do.svg?branch=master)](https://travis-ci.org/3cp/browser-do)
 
 Run JavaScript in a browser, forward browser console log to stdout, great for running unit tests in browser.
 
@@ -33,7 +33,7 @@ The browserify step is just an example, you don't have to use browserify with br
 
 ```bash
 cat dist/my-test-bundle.js | browser-do --tap # or jasmine/mocha
-# or
+# or avoid "cat" on windows
 browser-do --tap < dist/my-test-bundle.js
 ```
 
@@ -141,6 +141,23 @@ browser.end('console.log(location);');
 setTimeout(function() { browser.stop(); }, 5000);
 ```
 
+### Get TAP result by code
+
+Follow example takes unit test JS code from stdin, capture final result (either pass or fail).
+
+```js
+var run = require('browser-do');
+
+var browser = run({tap: true}); // or jasmine: true, or mocha: true
+process.stdin.pipe(browser).pipe(process.stdout);
+
+browser.on('exit', code => {
+  // the code is 0 for passed tests, 1 for failed tests
+});
+```
+
+> Note browser-do only generates a simple pass/fail result from the whole TAP output. browser-do retains original TAP output, so if you need detailed TAP output parsing, further pipe the stream to [tap-parser](https://github.com/tapjs/tap-parser).
+
 ### Unit tests support
 
 browser-do conveniently supports running [mocha](https://mochajs.org), [jasmine](https://jasmine.github.io), [tape](https://github.com/substack/tape) unit tests out of the box.
@@ -228,7 +245,7 @@ If you want to use different setup of mocha, just pipe a custom html file to bro
 
 ```bash
 cat my-mocha-index.html | browser-do --mocha --static .
-# or
+# or avoid "cat" on windows
 browser-do --mocha --static . < my-mocha-index.html
 ```
 
