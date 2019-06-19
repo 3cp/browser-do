@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 
 const opts = require('commander');
 const browserDo = require('../index');
@@ -14,7 +15,7 @@ opts
   .option('--mocha', 'Support mocha test, assumes BDD setup, uses TAP reporter, implicitly turns on option "tap", automatically exit when TAP finishes')
   .option('-k, --keep-open', 'Only for -t, --tap, --jasmine and --mocha, leave the browser open for debugging after running tests')
   .on('--help', function(){
-    console.log('')
+    console.log('');
     console.log('Available browsers if installed (for -b, --browser <name>):');
     console.log('  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, safari');
     console.log('');
