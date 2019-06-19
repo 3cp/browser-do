@@ -1,3 +1,12 @@
+# [0.2.0](https://github.com/3cp/browser-do/compare/v0.1.0...v0.2.0) (2019-06-19)
+
+
+### Features
+
+* replace xhr-write-stream with socket.io ([9be4d62](https://github.com/3cp/browser-do/commit/9be4d62))
+
+
+
 # 0.1.0 (2019-06-18)
 
 
