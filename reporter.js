@@ -1,5 +1,6 @@
 /* global window */
 // copied from browser-run
+// changed xhr-write-stream to socket.io
 
 require('source-map-support').install();
 
@@ -18,20 +19,21 @@ window.onerror = function (msg, file, line, column, err) {
   console.error(err && err.stack || err);
 };
 
-var xws = require('xhr-write-stream')('/xws');
-// buffer utf8 characters that would otherwise span chunk boundaries
-var ws = require('utf8-stream')();
-ws.pipe(xws);
+var io = require('socket.io-client')();
 
 var console = window.console || {};
-var methods = ['log', 'error', 'warn', 'dir', 'debug', 'info', 'trace'];
-for (var i = 0; i < methods.length; i++) (function (method) {
+
+function patch(method) {
   var old = console[method];
-  console[method] = function(msg) {
-    ws.write(Array.prototype.slice.call(arguments, 0).join(' ') + '\n');
+  console[method] = function() {
+    const message = Array.prototype.slice.call(arguments, 0).join(' ');
+    if (message) io.emit(method, message);
     if (old) old.apply(console, arguments);
-    if (msg instanceof Error && typeof JSON != 'undefined') {
-      ws.write(JSON.stringify(msg) + '\n');
-    }
   };
-})(methods[i]);
+}
+
+var methods = ['log', 'error', 'warn', 'dir', 'debug', 'info', 'trace'];
+var i;
+for (i = 0; i < methods.length; i++) {
+  patch(methods[i]);
+}
