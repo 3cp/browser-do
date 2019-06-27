@@ -1,3 +1,12 @@
+## [0.3.2](https://github.com/3cp/browser-do/compare/v0.3.1...v0.3.2) (2019-06-27)
+
+
+### Bug Fixes
+
+* don't check leak in default mocha setup, mocha thinks window.__coverage__ is a leak ([53695e3](https://github.com/3cp/browser-do/commit/53695e3))
+
+
+
 ## [0.3.1](https://github.com/3cp/browser-do/compare/v0.3.0...v0.3.1) (2019-06-27)
 
 
