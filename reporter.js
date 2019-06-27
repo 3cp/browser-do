@@ -37,3 +37,9 @@ var i;
 for (i = 0; i < methods.length; i++) {
   patch(methods[i]);
 }
+
+io.on('ask-coverage', function() {
+  if (window.__coverage__) {
+    io.emit('coverage', JSON.stringify(window.__coverage__));
+  }
+});

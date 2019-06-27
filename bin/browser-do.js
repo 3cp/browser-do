@@ -2,6 +2,8 @@
 /* eslint-disable no-console */
 
 const opts = require('commander');
+const fs = require('fs');
+const path = require('path');
 const browserDo = require('../index');
 
 opts
@@ -27,6 +29,21 @@ opts
     console.log('all work just like -b chrome-headless');
   })
   .parse(process.argv);
+
+function onCoverage(result) {
+  if (!result) return;
+
+  try {
+    fs.mkdirSync('.nyc_output');
+  } catch (e) {
+    if (e.code !== 'EEXIST') throw e;
+  }
+
+  fs.writeFileSync(path.join('.nyc_output', 'out.json'), result);
+  console.log('# code coverage is written to .nyc_output/out.json\n# you can use "npx nyc report --reporter=lcov --reporter=text" to view it\n');
+}
+
+opts.onCoverage = onCoverage;
 
 const run = browserDo(opts);
 process.stdin

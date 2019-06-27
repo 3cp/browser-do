@@ -35,8 +35,15 @@ module.exports = function(opts = {}) {
           console.error(err.message);
         }
 
+        if (opts.onCoverage) {
+          browserDo.askCoverage();
+        }
+
         if (!opts.keepOpen) {
           setTimeout(() => {
+            if (opts.onCoverage) {
+              browserDo.checkCoverage(opts.onCoverage);
+            }
             dpl.stop();
             dpl.emit('exit', dpl.failed ? 1 : 0);
           }, 1000);
