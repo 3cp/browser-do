@@ -1,3 +1,17 @@
+# [0.3.0](https://github.com/3cp/browser-do/compare/v0.2.0...v0.3.0) (2019-06-27)
+
+
+### Bug Fixes
+
+* avoid multiple tap complete callback ([e32b354](https://github.com/3cp/browser-do/commit/e32b354))
+
+
+### Features
+
+* support window.__coverage__ report ([c4c2aa0](https://github.com/3cp/browser-do/commit/c4c2aa0))
+
+
+
 # [0.2.0](https://github.com/3cp/browser-do/compare/v0.1.0...v0.2.0) (2019-06-19)
 
 
