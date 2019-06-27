@@ -318,13 +318,14 @@ For projects using babel, you can easily turn on [babel-plugin-istanbul](https:/
 
 > I have not found out what's the native way to instrument TypeScript file. But if you use [babel to compile ts files](https://babeljs.io/docs/en/babel-preset-typescript), you can continue to use babel-plugin-istanbul.
 
-For example on babel-plugin-istanbul + browser-do + nyc, try:
+For example on babel-plugin-istanbul + browser-do + nyc, try to create a SPA app with dumberjs skeleton:
 
 ```bash
 npx makes dumberjs
 ```
 
-Choose babel, jasmine/mocha/tape, (not jest. jest runs in Node.js, not browser, is irrelevant here). Then follow the README file on code coverage.
+Choose Aurelia or Vue (but not .vue single file component), babel, jasmine/mocha/tape, (not jest. jest runs in Node.js, not browser, is irrelevant here).
+Then follow the README file on code coverage. Note the React non-jest setup has some trouble in code coverage right now.
 
 ## License
 
