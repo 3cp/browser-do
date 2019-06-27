@@ -229,7 +229,6 @@ Note we use default BDD style in mocha.
   <script src="/mocha/mocha.js"></script>
   <script class="mocha-init">
     mocha.setup({ui: "bdd", reporter: "tap"});
-    mocha.checkLeaks();
   </script>
   <script src="/bundle.js"></script> <!-- Your code is loaded here! -->
   <script class="mocha-exec">
