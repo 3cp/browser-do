@@ -289,6 +289,44 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & fi
 ```
 
+# Code coverage report
+
+browser-do supports code coverage in a humble way. To understand how browser-do supports it, first we need to understand how [nyc/Istanbul](https://istanbul.js.org) works internally.
+
+To generate code coverage report, when in Node.js environment, nyc/Istanbul needs to
+1. instrument source code. It injects special code into your source code in order to gather code coverage information.
+2. when running unit tests, those instrumented source code writes code coverage information into an intermediate JavaScript object `global.__coverage__`. This becomes `window.__coverage__` in browser.
+3. nyc automatically writes `global.__coverage__` object to a local json file in `.nyc_output/` folder.
+4. nyc then uses various reporters to turn the json file into human readable report (text summary, or html file).
+
+When running browser-do, your unit tests is running in browser. All browser-do does is:
+1. if your source code is instrumented, it will generate `window.__coverage__` object. browser-do does nothing here.
+2. when tape/jasmine/mocha tests finished, browser-do check whether there is `window.__coverage__`. If so, it will write the object to `.nyc_output/out.json` (the default nyc output file).
+
+You then can follow it up with another command to turn that json file into readable report!
+
+```bash
+npx nyc report --reporter=lcov --reporter=text
+```
+
+Here browser-do does the bare minimum job: only writes `window.__coverage__` into `.nyc_output/out.json` when `window.__coverage__` exits.
+
+The task of instrumenting is not handled by browser-do, nor should (as browser-do is the consumer of a piece of JavaScript, not the creator).
+
+### babel-plugin-istanbul
+
+For projects using babel, you can easily turn on [babel-plugin-istanbul](https://github.com/istanbuljs/babel-plugin-istanbul) in test environment. That plugin will instrument your code.
+
+> I have not found out what's the native way to instrument TypeScript file. But if you use [babel to compile ts files](https://babeljs.io/docs/en/babel-preset-typescript), you can continue to use babel-plugin-istanbul.
+
+For example on babel-plugin-istanbul + browser-do + nyc, try:
+
+```bash
+npx makes dumberjs
+```
+
+Choose babel, jasmine/mocha/tape, (not jest. jest runs in Node.js, not browser, is irrelevant here). Then follow the README file on code coverage.
+
 ## License
 
 browser-do is licensed under the [MIT license](https://github.com/3cp/browser-do/blob/master/LICENSE).
