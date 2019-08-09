@@ -1,0 +1,30 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macOS-latest
+          - windows-latest
+        node:
+          - 8
+          - 10
+          - 12
+
+    name: Nodejs ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@master
+      - name: setup Nodejs
+        uses: actions/setup-node@v1
+        with:
+          version: ${{ matrix.node }}
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm test
