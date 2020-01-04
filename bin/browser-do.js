@@ -40,7 +40,9 @@ function onCoverage(result) {
   }
 
   fs.writeFileSync(path.join('.nyc_output', 'out.json'), result);
-  console.log('# code coverage is written to .nyc_output/out.json\n# you can use "npx nyc report --reporter=lcov --reporter=text" to view it\n');
+  console.log('# code coverage is written to .nyc_output/out.json\n' +
+    '# you can use "npx nyc report --reporter=lcov --reporter=text"\n' +
+    '# then view coverage/lcov-report/index.html in a browser\n');
 }
 
 opts.onCoverage = onCoverage;
