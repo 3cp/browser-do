@@ -44,17 +44,17 @@
     "concat-stream": "^2.0.0",
     "eslint": "^6.8.0",
     "jasmine-core": "^3.5.0",
-    "mocha": "^6.2.2",
+    "mocha": "^7.0.0",
     "socket.io-client": "^2.3.0",
     "source-map-support": "^0.5.16",
     "standard-changelog": "^2.0.21",
-    "tape": "^4.12.1"
+    "tape": "^4.13.0"
   },
   "dependencies": {
     "ansi-colors": "^4.1.1",
-    "commander": "^4.0.1",
+    "commander": "^4.1.0",
     "duplexer": "^0.1.1",
-    "electron": "^7.1.7",
+    "electron": "^7.1.9",
     "finalhandler": "^1.1.2",
     "lodash.kebabcase": "^4.1.1",
     "lodash.once": "^4.1.1",
