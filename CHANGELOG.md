@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/3cp/browser-do/compare/v0.3.4...v0.4.0) (2020-01-14)
+
+
+### Features
+
+* print out console debug/info/warn/error ([390df91](https://github.com/3cp/browser-do/commit/390df919f261d1766ebbd82f8cafe015bb577d52))
+
+
+
 ## [0.3.4](https://github.com/3cp/browser-do/compare/v0.3.3...v0.3.4) (2020-01-05)
 
 
