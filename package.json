@@ -51,6 +51,7 @@
     "tape": "^4.12.1"
   },
   "dependencies": {
+    "ansi-colors": "^4.1.1",
     "commander": "^4.0.1",
     "duplexer": "^0.1.1",
     "electron": "^7.1.7",
