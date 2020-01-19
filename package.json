@@ -1,6 +1,6 @@
 {
   "name": "browser-do",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Run JavaScript in a browser, forward browser console log to stdout, great for running unit tests in browser.",
   "main": "index.js",
   "engines": {

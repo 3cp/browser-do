@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/3cp/browser-do/compare/v0.4.0...v0.5.0) (2020-01-19)
+
+
+### Bug Fixes
+
+* use large socket.io timeout to cater huge test file ([49fe1ff](https://github.com/3cp/browser-do/commit/49fe1ffef5b2ed12df5a5b082ed0fd180604753c))
+
+
+
 # [0.4.0](https://github.com/3cp/browser-do/compare/v0.3.4...v0.4.0) (2020-01-14)
 
 
