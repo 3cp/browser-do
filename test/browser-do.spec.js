@@ -28,7 +28,7 @@ if (process.platform === 'win32' && process.env['TRAVIS_OS_NAME'] === 'windows')
     }));
     browser.on('error', t.fail);
     browser.end('console.log("hello");');
-    setTimeout(() => browser.stop(), 3000);
+    setTimeout(() => browser.stop(), 6000);
   });
 
   test('browser-do detects tap output, auto close', t => {
