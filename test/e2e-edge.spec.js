@@ -1,7 +1,8 @@
 const test = require('tape');
 const {exec} = require('child_process');
+const cat = require('./_cat');
 
-if (process.platform === 'win32' && process.env['TRAVIS_OS_NAME'] !== 'windows') {
+if (process.platform === 'win32') {
   test('browser-do:edge detects passed tape tests', t => {
     exec('npx browserify test/samples/_tape-good.js | node bin/browser-do.js --tap -b edge', error => {
       t.notOk(error);
@@ -45,34 +46,34 @@ if (process.platform === 'win32' && process.env['TRAVIS_OS_NAME'] !== 'windows')
   });
 
   test('browser-do:edge supports static assets and html input', t => {
-    exec('cat test/_jasmine-good.html | node bin/browser-do.js --jasmine --static test/samples -b edge', error => {
+    exec(cat + ' test/_jasmine-good.html | node bin/browser-do.js --jasmine --static test/samples -b edge', error => {
       t.notOk(error);
       t.end();
     });
   });
 
   test('browser-do:edge supports static assets and html input, with failed tests', t => {
-    exec('cat test/_jasmine-bad.html | node bin/browser-do.js --jasmine --static test/samples -b edge', error => {
+    exec(cat + ' test/_jasmine-bad.html | node bin/browser-do.js --jasmine --static test/samples -b edge', error => {
       t.ok(error);
       t.end();
     });
   });
 
   test('browser-do:edge supports mock and html input', t => {
-    exec('cat test/_mock-jasmine-good.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b edge', error => {
+    exec(cat + ' test/_mock-jasmine-good.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b edge', error => {
       t.notOk(error);
       t.end();
     });
   });
 
   test('browser-do:edge supports mock and html input, with failed tests', t => {
-    exec('cat test/_mock-jasmine-bad.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b edge', error => {
+    exec(cat + ' test/_mock-jasmine-bad.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b edge', error => {
       t.ok(error);
       t.end();
     });
   });
 } else {
-  test('bypass edge on non-win32 platform and travis-ci windows box', t => {
+  test('bypass edge on non-win32 platform', t => {
     t.pass('bypass edge on non-win32 platform and travis-ci windows box');
     t.end();
   });
