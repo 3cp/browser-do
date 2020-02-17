@@ -45,28 +45,28 @@ if (process.platform === 'win32') {
   });
 
   test('browser-do:edge supports static assets and html input', t => {
-    exec('node bin/browser-do.js --jasmine --static test/samples -b edge <  test/_jasmine-good.html', error => {
+    exec('npx cat test/_jasmine-good.html | node bin/browser-do.js --jasmine --static test/samples -b edge', error => {
       t.notOk(error);
       t.end();
     });
   });
 
   test('browser-do:edge supports static assets and html input, with failed tests', t => {
-    exec('node bin/browser-do.js --jasmine --static test/samples -b edge <  test/_jasmine-bad.html', error => {
+    exec('npx cat test/_jasmine-bad.html | node bin/browser-do.js --jasmine --static test/samples -b edge', error => {
       t.ok(error);
       t.end();
     });
   });
 
   test('browser-do:edge supports mock and html input', t => {
-    exec('node bin/browser-do.js --jasmine --mock test/_mock.js -b edge <  test/_mock-jasmine-good.html', error => {
+    exec('npx cat test/_mock-jasmine-good.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b edge', error => {
       t.notOk(error);
       t.end();
     });
   });
 
   test('browser-do:edge supports mock and html input, with failed tests', t => {
-    exec('node bin/browser-do.js --jasmine --mock test/_mock.js -b edge <  test/_mock-jasmine-bad.html', error => {
+    exec('npx cat test/_mock-jasmine-bad.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b edge', error => {
       t.ok(error);
       t.end();
     });

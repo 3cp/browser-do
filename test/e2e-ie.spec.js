@@ -45,28 +45,28 @@ if (process.platform === 'win32') {
   });
 
   test('browser-do:ie supports static assets and html input', t => {
-    exec('node bin/browser-do.js --jasmine --static test/samples -b ie <  test/_jasmine-good.html', error => {
+    exec('npx cat test/_jasmine-good.html | node bin/browser-do.js --jasmine --static test/samples -b ie', error => {
       t.notOk(error);
       t.end();
     });
   });
 
   test('browser-do:ie supports static assets and html input, with failed tests', t => {
-    exec('node bin/browser-do.js --jasmine --static test/samples -b ie <  test/_jasmine-bad.html', error => {
+    exec('npx cat test/_jasmine-bad.html | node bin/browser-do.js --jasmine --static test/samples -b ie', error => {
       t.ok(error);
       t.end();
     });
   });
 
   test('browser-do:ie supports mock and html input', t => {
-    exec('node bin/browser-do.js --jasmine --mock test/_mock.js -b ie <  test/_mock-jasmine-good.html', error => {
+    exec('npx cat test/_mock-jasmine-good.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b ie', error => {
       t.notOk(error);
       t.end();
     });
   });
 
   test('browser-do:ie supports mock and html input, with failed tests', t => {
-    exec('node bin/browser-do.js --jasmine --mock test/_mock.js -b ie <  test/_mock-jasmine-bad.html', error => {
+    exec('npx cat test/_mock-jasmine-bad.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b ie', error => {
       t.ok(error);
       t.end();
     });

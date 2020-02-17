@@ -50,28 +50,28 @@ test('browser-do:electron detects failed mocha tests', t => {
 });
 
 test('browser-do:electron supports static assets and html input', t => {
-  exec('node bin/browser-do.js --jasmine --static test/samples <  test/_jasmine-good.html', error => {
+  exec('npx cat test/_jasmine-good.html | node bin/browser-do.js --jasmine --static test/samples', error => {
     t.notOk(error);
     t.end();
   });
 });
 
 test('browser-do:electron supports static assets and html input, with failed tests', t => {
-  exec('node bin/browser-do.js --jasmine --static test/samples <  test/_jasmine-bad.html', error => {
+  exec('npx cat test/_jasmine-bad.html | node bin/browser-do.js --jasmine --static test/samples', error => {
     t.ok(error);
     t.end();
   });
 });
 
 test('browser-do:electron supports mock and html input', t => {
-  exec('node bin/browser-do.js --jasmine --mock test/_mock.js <  test/_mock-jasmine-good.html', error => {
+  exec('npx cat test/_mock-jasmine-good.html | node bin/browser-do.js --jasmine --mock test/_mock.js', error => {
     t.notOk(error);
     t.end();
   });
 });
 
 test('browser-do:electron supports mock and html input, with failed tests', t => {
-  exec('node bin/browser-do.js --jasmine --mock test/_mock.js <  test/_mock-jasmine-bad.html', error => {
+  exec('npx cat test/_mock-jasmine-bad.html | node bin/browser-do.js --jasmine --mock test/_mock.js', error => {
     t.ok(error);
     t.end();
   });
