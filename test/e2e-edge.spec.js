@@ -1,6 +1,5 @@
 const test = require('tape');
 const {exec} = require('child_process');
-const cat = require('./_cat');
 
 if (process.platform === 'win32') {
   test('browser-do:edge detects passed tape tests', t => {
@@ -46,28 +45,28 @@ if (process.platform === 'win32') {
   });
 
   test('browser-do:edge supports static assets and html input', t => {
-    exec(cat + ' test/_jasmine-good.html | node bin/browser-do.js --jasmine --static test/samples -b edge', error => {
+    exec('node bin/browser-do.js --jasmine --static test/samples -b edge <  test/_jasmine-good.html', error => {
       t.notOk(error);
       t.end();
     });
   });
 
   test('browser-do:edge supports static assets and html input, with failed tests', t => {
-    exec(cat + ' test/_jasmine-bad.html | node bin/browser-do.js --jasmine --static test/samples -b edge', error => {
+    exec('node bin/browser-do.js --jasmine --static test/samples -b edge <  test/_jasmine-bad.html', error => {
       t.ok(error);
       t.end();
     });
   });
 
   test('browser-do:edge supports mock and html input', t => {
-    exec(cat + ' test/_mock-jasmine-good.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b edge', error => {
+    exec('node bin/browser-do.js --jasmine --mock test/_mock.js -b edge <  test/_mock-jasmine-good.html', error => {
       t.notOk(error);
       t.end();
     });
   });
 
   test('browser-do:edge supports mock and html input, with failed tests', t => {
-    exec(cat + ' test/_mock-jasmine-bad.html | node bin/browser-do.js --jasmine --mock test/_mock.js -b edge', error => {
+    exec('node bin/browser-do.js --jasmine --mock test/_mock.js -b edge <  test/_mock-jasmine-bad.html', error => {
       t.ok(error);
       t.end();
     });
