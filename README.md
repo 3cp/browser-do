@@ -15,13 +15,13 @@ browser-do offers:
 1. Browser detection borrowed from various karma browser launchers. Simpler and more reliable on Windows than [browser-launcher](https://github.com/substack/browser-launcher).
 2. [TAP output](http://testanything.org) support.
 3. Kept browser-run options `-p, --port`, `-b, --browser browser-name`, `-s, --static`, and `-m, --mock`.
-4. Removed `--input html` as browser-do auto detects JavaScript or HTML input.
-5. Removed `-n, --node` and `--basedir` as browser-do doesn't want to support Node.js code. (In original browser-run, Node.js code only work with electron anyway)
+4. Removed `--input html` as browser-do auto detects input format.
+5. Removed `-n, --node` and `--basedir` as browser-do doesn't want to support Node.js code. (In original browser-run, Node.js code only works with electron anyway)
 6. Added options `-t, --tap` to handle generic TAP output.
-7. Added `--jasmine` and `--mocha` to conveniently support jasmine/mocha (setup global vars, use TAP reporter).
+7. Added `--jasmine` and `--mocha` to conveniently support jasmine/mocha (setup global vars, switch to TAP reporter).
 8. Added `-k, --keep-open` (inherited from tap-run) to keep browser running after TAP finished.
 
-browser-do is simple and flexible to run your unit tests in browsers without any setup. Just pipe your code to browser-do with browser of your choice (default to an invisible electron).
+browser-do is simple and flexible. Just pipe your code to browser-do with a browser of your choice (default to an headless electron).
 
 ```bash
 browserify test/all-my-tape-tests.js | browser-do --tap
@@ -31,15 +31,17 @@ browserify test/all-my-mocha-tests.js | browser-do --mocha --browser chrome-head
 
 > Note browserify [doesn't support glob](https://github.com/browserify/browserify/pull/1205), that's why we cannot use `browserify 'test/**/*.spec.js'` here.
 
-The browserify step is just an example, you don't have to use browserify with browser-do. You can prepare a JavaScript bundle with any bundler, then just run it with browser-do.
+You don't need to use browserify with browser-do. You can prepare a JavaScript bundle with any bundler, then just pipe it to browser-do.
 
 ```bash
 cat dist/my-test-bundle.js | browser-do --tap # or jasmine/mocha
 # or avoid "cat" on windows
 browser-do --tap < dist/my-test-bundle.js
+# Or in PowerShell
+Get-Content dist/my-test-bundle.js | browser-do --tap # or jasmine/mocha
 ```
 
-One more tip, because browser-do normalises tape/jasmine/mocha into TAP output, you can pipe to any TAP [pretty reporters](https://github.com/substack/tape#pretty-reporters)
+One more tip, because browser-do normalises tape/jasmine/mocha into TAP output, you can further pipe it to any TAP [pretty reporters](https://github.com/substack/tape#pretty-reporters)
 ```bash
 browserify test/all-my-jasmine-tests.js | browser-do --jasmine | tap-dot
 ```
@@ -62,6 +64,8 @@ electron is the always available default.
 | edge-headless      | Yes   |       | Yes     |
 | safari             | Yes   |       |         |
 
+> browser-do latest v2 only supports **Chromium based Microsoft Edge**. To work with old Microsoft Edge, please use browser-do v1.
+
 ## Usage
 
 ```
@@ -80,7 +84,7 @@ Options:
   -h, --help            output usage information
 
 Available browsers if installed (for -b, --browser <name>):
-  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, safari
+  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, edge-headless, safari
 
 There is some tolerance on browser name, for example:
   -b ChromeHeadless

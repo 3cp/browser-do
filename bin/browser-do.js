@@ -19,7 +19,7 @@ opts
   .on('--help', function(){
     console.log('');
     console.log('Available browsers if installed (for -b, --browser <name>):');
-    console.log('  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, safari');
+    console.log('  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, edge-headless, safari');
     console.log('');
     console.log('There is some tolerance on browser name, for example:');
     console.log('  -b ChromeHeadless');
