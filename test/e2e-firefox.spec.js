@@ -1,13 +1,9 @@
 const test = require('tape');
 const {exec} = require('child_process');
+const getBrowser = require('../lib/get-browser');
+const hasFirefox = getBrowser('firefox-headless');
 
-if (process.platform === 'darwin' && process.env.GITHUB_ACTION) {
-  test('bypass firefox on macOS image, where firefox is not installed', t => {
-    t.pass('bypass ie on non-win32 platform and travis-ci windows box');
-    t.end();
-  });
-} else {
-
+if (hasFirefox) {
   test('browser-do:firefox detects passed tape tests', t => {
     exec('npx browserify test/samples/_tape-good.js | node bin/browser-do.js --tap -b firefox-headless', error => {
       t.notOk(error);
@@ -76,6 +72,11 @@ if (process.platform === 'darwin' && process.env.GITHUB_ACTION) {
       t.ok(error);
       t.end();
     });
+  });
+} else {
+  test('bypass firefox because it is not present', t => {
+    t.pass('bypass firefox because it is not present');
+    t.end();
   });
 }
 
