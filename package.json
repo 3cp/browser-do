@@ -21,7 +21,7 @@
     "postversion": "git push && git push --tags && npm publish",
     "pretest": "npm run lint && npm run build",
     "test": "tape \"test/**/*.spec.js\"",
-    "build": "browserify reporter.js -o dist/reporter.js",
+    "build": "node build-reporter.js",
     "prepare": "npm run build"
   },
   "repository": {
@@ -43,6 +43,7 @@
     "cat": "^0.2.0",
     "chai": "^4.2.0",
     "concat-stream": "^2.0.0",
+    "es6ify": "^1.6.0",
     "eslint": "^6.8.0",
     "jasmine-core": "^3.5.0",
     "mocha": "^7.0.1",
