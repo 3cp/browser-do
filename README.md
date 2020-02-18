@@ -260,6 +260,25 @@ In your special html file:
 
 ## CI setup
 
+### GitHub Actions
+
+When running unit tests with browser-do, you need xvfb on Linux.
+
+```yml
+- run: xvfb-run -a npm test
+  if: runner.os == 'Linux'
+- run: npm test
+  if: runner.os != 'Linux'
+```
+
+You may also need to enlarge xvfb default screen size (640x480x8) for your tests.
+
+```sh
+xvfb-run -a -s '-screen 0 1024x768x24' npm test
+```
+
+### Travis
+
 To use browser-do on travis, add this to your `.travis.yml`:
 
 ```yml
