@@ -1,7 +1,9 @@
 const test = require('tape');
 const {exec} = require('child_process');
+const getBrowser = require('../lib/get-browser');
+const hasEdge = getBrowser('edge');
 
-if (process.platform === 'win32') {
+if (hasEdge) {
   test('browser-do:edge detects passed tape tests', t => {
     exec('npx browserify test/samples/_tape-good.js | node bin/browser-do.js --tap -b edge', error => {
       t.notOk(error);
@@ -72,8 +74,8 @@ if (process.platform === 'win32') {
     });
   });
 } else {
-  test('bypass edge on non-win32 platform', t => {
-    t.pass('bypass edge on non-win32 platform and travis-ci windows box');
+  test('bypass edge because it is not present', t => {
+    t.pass('bypass edge because it is not present');
     t.end();
   });
 }
