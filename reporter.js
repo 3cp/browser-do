@@ -6,7 +6,9 @@ require('source-map-support').install();
 
 // delay window.close
 var close = window.close;
-window.close = function () {
+// ['c' + 'lose'] is to bypass IE11 SCRIPT5045:
+// Assignment to read-only properties is not allowed in strict mode
+window['c' + 'lose'] = function () {
   setTimeout(function () {
     close.call(window);
   }, 1000);
