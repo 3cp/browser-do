@@ -1,4 +1,4 @@
-# browser-do [![Build Status](https://travis-ci.org/3cp/browser-do.svg?branch=master)](https://travis-ci.org/3cp/browser-do)
+# browser-do ![CI](https://github.com/3cp/browser-do/workflows/CI/badge.svg)
 
 Run JavaScript in a browser, forward browser console log to stdout, great for running unit tests in browser.
 
