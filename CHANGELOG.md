@@ -1,3 +1,26 @@
+# [2.0.0](https://github.com/3cp/browser-do/compare/v1.0.0...v2.0.0) (2020-02-18)
+
+
+### Bug Fixes
+
+* bypass IE11 SCRIPT5045 ([a86710c](https://github.com/3cp/browser-do/commit/a86710c7aa5b9e0178328c46b934ca4e350c188d))
+* fix macOS false browser detection ([961a8c6](https://github.com/3cp/browser-do/commit/961a8c60e16fda9771574cc40f8f46ea34b1d2eb))
+* fix reporter build ([2a8fc38](https://github.com/3cp/browser-do/commit/2a8fc38f8d5dc3b872c210729831810db096a1ce))
+* make reporter runnable on IE11 again ([0929c9d](https://github.com/3cp/browser-do/commit/0929c9dda6c88416a69479c95d8908a49670f317))
+
+
+### Features
+
+* migrate to latest chromium based edge ([b1a54c1](https://github.com/3cp/browser-do/commit/b1a54c195249469c94fa48c7a73b2679781680d5))
+* support browser edge-headless ([63474b9](https://github.com/3cp/browser-do/commit/63474b979bfa36ad55aafca979099e1200d9136f))
+
+
+### BREAKING CHANGES
+
+* doesn't work with old MS Edge anymore.
+
+
+
 # [1.0.0](https://github.com/3cp/browser-do/compare/v0.5.0...v1.0.0) (2020-01-21)
 
 
