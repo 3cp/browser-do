@@ -58,7 +58,8 @@ electron is the always available default.
 | firefox            | Yes   | Yes   | Yes     |
 | firefox-headless   | Yes   | Yes   | Yes     |
 | ie                 |       |       | Yes     |
-| edge               |       |       | Yes     |
+| edge               | Yes   |       | Yes     |
+| edge-headless      | Yes   |       | Yes     |
 | safari             | Yes   |       |         |
 
 ## Usage
