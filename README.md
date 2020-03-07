@@ -21,7 +21,7 @@ browser-do offers:
 7. Added `--jasmine` and `--mocha` to conveniently support jasmine/mocha (setup global vars, switch to TAP reporter).
 8. Added `-k, --keep-open` (inherited from tap-run) to keep browser running after TAP finished.
 
-browser-do is simple and flexible. Just pipe your code to browser-do with a browser of your choice (default to an headless electron).
+browser-do is simple and flexible. Just pipe your code to browser-do with a browser of your choice (default to a headless electron).
 
 ```bash
 browserify test/all-my-tape-tests.js | browser-do --tap
