@@ -1,3 +1,12 @@
+## [2.0.2](https://github.com/3cp/browser-do/compare/v2.0.1...v2.0.2) (2020-05-15)
+
+
+### Performance Improvements
+
+* remove through and duplexer ([4b11b1e](https://github.com/3cp/browser-do/commit/4b11b1e4a7cca2fcedabd3649048318b15695a59))
+
+
+
 ## [2.0.1](https://github.com/3cp/browser-do/compare/v2.0.0...v2.0.1) (2020-02-19)
 
 
