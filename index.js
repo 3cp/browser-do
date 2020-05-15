@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 const run = require('./lib/browser-run');
-const through = require('through');
-const {Writable} = require('stream');
+const {Writable, Transform} = require('stream');
 const duplex = require('duplexer');
 const tapParse = require('./lib/tap-parse');
 
@@ -16,7 +15,11 @@ module.exports = function(opts = {}) {
     }
   });
 
-  const holdOutput = through();
+  const holdOutput = new Transform({
+    transform(chunk, enc, cb) {
+      cb(null, chunk);
+    }
+  });
   const dpl = duplex(readInput, holdOutput);
 
   dpl.failed = false;

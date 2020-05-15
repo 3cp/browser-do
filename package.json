@@ -63,7 +63,6 @@
     "serve-static": "^1.14.1",
     "server-destroy": "^1.0.1",
     "socket.io": "^2.3.0",
-    "through": "^2.3.8",
     "tmp": "^0.2.1",
     "which": "^2.0.2"
   }

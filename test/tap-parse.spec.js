@@ -1,6 +1,11 @@
 const test = require('tape');
+const {Transform} = require('stream');
 const tapParse = require('../lib/tap-parse');
-const through = require('through');
+const through = () => new Transform({
+  transform(chunk, enc, cb) {
+    cb(null, chunk);
+  }
+});
 
 test('tapParse passes all ok', t => {
   const inp = through();
