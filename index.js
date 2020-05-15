@@ -21,7 +21,10 @@ module.exports = function(opts = {}) {
 
   dpl.failed = false;
   let browserDo;
-  dpl.stop = () => browserDo && browserDo.stop();
+  dpl.stop = () => {
+    if (browserDo) browserDo.stop();
+    dpl.emit('exit', 0);
+  };
 
   readInput.on('finish', () => {
     const data = Buffer.concat(chunks).toString();
