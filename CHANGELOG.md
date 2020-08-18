@@ -1,3 +1,17 @@
+# [3.0.0](https://github.com/3cp/browser-do/compare/v2.0.2...v3.0.0) (2020-08-18)
+
+
+### Features
+
+* drop nodejs v8 support ([d3680c3](https://github.com/3cp/browser-do/commit/d3680c340e11ec473aa4930c7302dd4f07825349))
+
+
+### BREAKING CHANGES
+
+* drop nodejs v8 support
+
+
+
 ## [2.0.2](https://github.com/3cp/browser-do/compare/v2.0.1...v2.0.2) (2020-05-15)
 
 
