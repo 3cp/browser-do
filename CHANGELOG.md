@@ -1,3 +1,12 @@
+## [3.0.1](https://github.com/3cp/browser-do/compare/v3.0.0...v3.0.1) (2020-10-01)
+
+
+### Bug Fixes
+
+* has to use yarn to build to support IE11 ([59ff7a2](https://github.com/3cp/browser-do/commit/59ff7a28e4d21aa840e23712155a96a23780b84e))
+
+
+
 # [3.0.0](https://github.com/3cp/browser-do/compare/v2.0.2...v3.0.0) (2020-08-18)
 
 
