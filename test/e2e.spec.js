@@ -67,6 +67,34 @@ browsers.forEach(browser => {
       });
     });
 
+    test(`browser-do:${browser} supports jasmine fit tests`, t => {
+      exec('npx browserify test/samples/_jasmine-fit.js | node bin/browser-do.js --jasmine' + browserArg, error => {
+        t.notOk(error);
+        t.end();
+      });
+    });
+
+    test(`browser-do:${browser} supports jasmine fdescribe tests`, t => {
+      exec('npx browserify test/samples/_jasmine-fdescribe.js | node bin/browser-do.js --jasmine' + browserArg, error => {
+        t.notOk(error);
+        t.end();
+      });
+    });
+
+    test(`browser-do:${browser} supports jasmine xit tests`, t => {
+      exec('npx browserify test/samples/_jasmine-xit.js | node bin/browser-do.js --jasmine' + browserArg, error => {
+        t.notOk(error);
+        t.end();
+      });
+    });
+
+    test(`browser-do:${browser} supports jasmine xdescribe tests`, t => {
+      exec('npx browserify test/samples/_jasmine-xdescribe.js | node bin/browser-do.js --jasmine' + browserArg, error => {
+        t.notOk(error);
+        t.end();
+      });
+    });
+
     test(`browser-do:${browser} detects passed mocha tests`, t => {
       exec('npx browserify test/samples/_mocha-good.js | node bin/browser-do.js --mocha' + browserArg, error => {
         t.notOk(error);

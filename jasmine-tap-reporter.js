@@ -4,7 +4,7 @@
   function elapsed(start, end) { return (end - start)/1000; }
   function isFailed(obj) { return obj.status === "failed"; }
   function isSkipped(obj) { return obj.status === "pending"; }
-  function isDisabled(obj) { return obj.status === "disabled"; }
+  function isExcluded(obj) { return obj.status === "excluded" || obj.status === "disabled"; }
   function extend(dupe, obj) { // performs a shallow copy of all props of `obj` onto `dupe`
     for (var prop in obj) {
       if (obj.hasOwnProperty(prop)) {
@@ -30,19 +30,18 @@
     self.finished = false;
 
     var startTime,
-    endTime,
-    currentSuite = null,
-    totalSpecsExecuted = 0,
-    totalSpecsSkipped = 0,
-    totalSpecsDisabled = 0,
-    totalSpecsFailed = 0,
-    totalSpecsDefined,
-    // when use use fit, jasmine never calls suiteStarted / suiteDone, so make a fake one to use
-    fakeFocusedSuite = {
-      id: "focused",
-      description: "focused specs",
-      fullName: "focused specs"
-    };
+      endTime,
+      currentSuite = null,
+      totalSpecsExecuted = 0,
+      totalSpecsSkipped = 0,
+      totalSpecsFailed = 0,
+      totalSpecsDefined,
+      // when use use fit, jasmine never calls suiteStarted / suiteDone, so make a fake one to use
+      fakeFocusedSuite = {
+        id: "focused",
+        description: "focused specs",
+        fullName: "focused specs"
+      };
 
     var __suites = {}, __specs = {};
     function getSuite(suite) {
@@ -92,12 +91,14 @@
         }
       }
       if (isSkipped(spec)) {
+        totalSpecsExecuted--;
         totalSpecsSkipped++;
-        resultStr += " # SKIP disabled by xit or similar";
+        resultStr = "# Skipped (xit or xdescribe): " + spec._suite.description + " : " + spec.description;
       }
-      if (isDisabled(spec)) {
-        totalSpecsDisabled++;
-        resultStr += " # SKIP disabled by xit, ?spec=xyz or similar";
+      if (isExcluded(spec)) {
+        totalSpecsExecuted--;
+        totalSpecsSkipped++;
+        resultStr = "# Excluded (by fit or fdescribe on other spec): " + spec._suite.description + " : " + spec.description;
       }
       log(resultStr);
     };
@@ -116,8 +117,7 @@
       }
       endTime = new Date();
       var dur = elapsed(startTime, endTime),
-      totalSpecs = totalSpecsDefined || totalSpecsExecuted,
-      disabledSpecs = totalSpecs - totalSpecsExecuted + totalSpecsDisabled;
+        totalSpecs = totalSpecsDefined || totalSpecsExecuted;
 
       if (totalSpecsExecuted === 0) {
         log("1..0 # All tests disabled");
@@ -125,13 +125,11 @@
         log("1.." + totalSpecsExecuted);
       }
       var diagStr = "#";
-      diagStr = "# " + totalSpecs + " spec" + (totalSpecs === 1 ? "" : "s");
-      diagStr += ", " + totalSpecsFailed + " failure" + (totalSpecsFailed === 1 ? "" : "s");
+      diagStr = "# " + totalSpecs + " spec" + (totalSpecs < 2 ? "" : "s");
+      diagStr += ", " + totalSpecsFailed + " failure" + (totalSpecsFailed < 2 ? "" : "s");
       diagStr += ", " + totalSpecsSkipped + " skipped";
-      diagStr += ", " + disabledSpecs + " disabled";
       diagStr += " in " + dur + "s.";
       log(diagStr);
-      log("# NOTE: disabled specs are usually a result of xdescribe.");
 
       self.finished = true;
     };
