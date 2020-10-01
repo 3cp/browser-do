@@ -6,7 +6,7 @@ Run JavaScript in a browser, forward browser console log to stdout, great for ru
 npm i -D browser-do
 ```
 
-> Requires minimum Node.js v8.9+.
+> Requires minimum Node.js v10.13+.
 
 browser-do is an alternative implementation of [browser-run](https://github.com/juliangruber/browser-run) and [tape-run](https://github.com/juliangruber/tape-run), with better Windows support, supports running [mocha](https://mochajs.org), [jasmine](https://jasmine.github.io), [tape](https://github.com/substack/tape) unit tests out of the box.
 
