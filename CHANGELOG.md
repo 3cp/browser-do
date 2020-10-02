@@ -1,3 +1,12 @@
+## [3.0.2](https://github.com/3cp/browser-do/compare/v3.0.1...v3.0.2) (2020-10-02)
+
+
+### Bug Fixes
+
+* fix wrong jasmine report on fit/fdescribe ([3a1f72e](https://github.com/3cp/browser-do/commit/3a1f72e3c2de80efb5c393aa6d05c0cda4a11a53)), closes [#3](https://github.com/3cp/browser-do/issues/3)
+
+
+
 ## [3.0.1](https://github.com/3cp/browser-do/compare/v3.0.0...v3.0.1) (2020-10-01)
 
 
