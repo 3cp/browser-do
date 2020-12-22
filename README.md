@@ -64,7 +64,7 @@ electron is the always available default.
 | edge-headless      | Yes   |       | Yes     |
 | safari             | Yes   |       |         |
 
-> browser-do latest v2 only supports **Chromium based Microsoft Edge**. To work with old Microsoft Edge, please use browser-do v1.
+> browser-do v2+ only supports **Chromium based Microsoft Edge**. To work with old Microsoft Edge, please use browser-do v1.
 
 ## Usage
 
@@ -306,7 +306,6 @@ addons:
   apt:
     packages:
       - xvfb
-before_install:
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export DISPLAY=':99.0' ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & fi
