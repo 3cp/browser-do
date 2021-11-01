@@ -19,7 +19,7 @@ opts
   .on('--help', function(){
     console.log('');
     console.log('Available browsers if installed (for -b, --browser <name>):');
-    console.log('  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, edge-headless, safari');
+    console.log('  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, edge, edge-headless, safari');
     console.log('');
     console.log('There is some tolerance on browser name, for example:');
     console.log('  -b ChromeHeadless');
@@ -45,9 +45,10 @@ function onCoverage(result) {
     '# then view coverage/lcov-report/index.html in a browser\n');
 }
 
-opts.onCoverage = onCoverage;
+const options = opts.opts();
+options.onCoverage = onCoverage;
 
-const run = browserDo(opts);
+const run = browserDo(options);
 process.stdin
   .pipe(run)
   .pipe(process.stdout);

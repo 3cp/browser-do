@@ -14,7 +14,6 @@ const browsers = [
   'chromium-headless',
   'edge-headless',
   'firefox-headless',
-  'ie',
   'safari'
 ];
 
