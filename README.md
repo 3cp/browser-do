@@ -59,11 +59,11 @@ electron is the always available default.
 | chromium-headless  | Yes   | Yes   | Yes     |
 | firefox            | Yes   | Yes   | Yes     |
 | firefox-headless   | Yes   | Yes   | Yes     |
-| ie                 |       |       | Yes     |
 | edge               | Yes   |       | Yes     |
 | edge-headless      | Yes   |       | Yes     |
 | safari             | Yes   |       |         |
 
+> browser-do v4+ dropped support of Microsoft IE. To work with IE, please use browser-do v3.
 > browser-do v2+ only supports **Chromium based Microsoft Edge**. To work with old Microsoft Edge, please use browser-do v1.
 
 ## Usage
@@ -84,7 +84,7 @@ Options:
   -h, --help            output usage information
 
 Available browsers if installed (for -b, --browser <name>):
-  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, ie, edge, edge-headless, safari
+  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, edge, edge-headless, safari
 
 There is some tolerance on browser name, for example:
   -b ChromeHeadless

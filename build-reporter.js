@@ -1,6 +1,5 @@
 const fs = require('fs');
 const browserify = require('browserify');
-const es6ify = require("es6ify");
 
 try {
   fs.mkdirSync('dist');
@@ -8,8 +7,6 @@ try {
   // ignore
 }
 
-browserify('reporter.js')
-  .add(es6ify.runtime)
-  .transform(es6ify)
+browserify('reporter.js',)
   .bundle()
   .pipe(fs.createWriteStream('dist/reporter.js'));
