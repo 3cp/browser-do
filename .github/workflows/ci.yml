@@ -24,8 +24,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node_version }}
-      - run: yarn
-      - run: xvfb-run -a yarn test
+      - run: npm i
+      - run: xvfb-run -a npm test
         if: runner.os == 'Linux'
-      - run: yarn test
+      - run: npm test
         if: runner.os != 'Linux'
