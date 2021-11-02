@@ -130,7 +130,12 @@ browsers.forEach(browser => {
     });
 
     test(`browser-do:${browser} supports mock and html input, with failed tests`, t => {
-      exec('npx cat test/_mock-jasmine-bad.html | node bin/browser-do.js --jasmine --mock test/_mock.js' + browserArg, error => {
+      exec('npx cat test/_mock-jasmine-bad.html | node bin/browser-do.js --jasmine --mock test/_mock.js' + browserArg, (error, stdout, stderr) => {
+        if (browser === 'firefox-headless') {
+          console.log("# error " + JSON.stringify(error));
+          console.log("# stdout " + JSON.stringify(stdout.toString()));
+          console.log("# stderr " + JSON.stringify(stderr.toString()));
+        }
         t.ok(error);
         t.end();
       });
