@@ -1,3 +1,17 @@
+# [4.0.0](https://github.com/3cp/browser-do/compare/v3.0.2...v4.0.0) (2021-11-03)
+
+
+### chore
+
+* upgrade deps, es6ify doesn't work with latest socket.io anymore ([de56192](https://github.com/3cp/browser-do/commit/de561924cccea3c6b9a0997cc1efc3f474fc0e6a))
+
+
+### BREAKING CHANGES
+
+* drop IE support
+
+
+
 ## [3.0.2](https://github.com/3cp/browser-do/compare/v3.0.1...v3.0.2) (2020-10-02)
 
 
