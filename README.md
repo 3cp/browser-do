@@ -200,7 +200,8 @@ FYI, here is the special `index.html` browser-do provided for jasmine. Showing h
 <body>
   <script src="/jasmine-core/jasmine.js"></script>
   <script src="/jasmine-core/jasmine-html.js"></script>
-  <script src="/jasmine-core/boot.js"></script>
+  <script src="/jasmine-core/boot0.js"></script>
+  <script src="/jasmine-core/boot1.js"></script>
   <script src="/jasmine-tap-reporter.js"></script>
   <script src="/bundle.js"></script> <!-- Your code is loaded here! -->
 </body>
