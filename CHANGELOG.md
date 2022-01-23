@@ -1,3 +1,12 @@
+# [4.1.0](https://github.com/3cp/browser-do/compare/v4.0.0...v4.1.0) (2022-01-23)
+
+
+### Bug Fixes
+
+* support both jasmine-core v3 and v4 ([9ea5ee2](https://github.com/3cp/browser-do/commit/9ea5ee21644dac1b73b0d2f621fa468bdedd57a4)), closes [#8](https://github.com/3cp/browser-do/issues/8)
+
+
+
 # [4.0.0](https://github.com/3cp/browser-do/compare/v3.0.2...v4.0.0) (2021-11-03)
 
 
