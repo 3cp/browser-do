@@ -16,18 +16,17 @@ opts
   .option('--jasmine', 'Support jasmine test, uses jasmine TAP reporter, implicitly turns on option "tap", automatically exit when TAP finishes')
   .option('--mocha', 'Support mocha test, assumes BDD setup, uses TAP reporter, implicitly turns on option "tap", automatically exit when TAP finishes')
   .option('-k, --keep-open', 'Only for -t, --tap, --jasmine and --mocha, leave the browser open for debugging after running tests')
-  .on('--help', function(){
-    console.log('');
-    console.log('Available browsers if installed (for -b, --browser <name>):');
-    console.log('  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, edge, edge-headless, safari');
-    console.log('');
-    console.log('There is some tolerance on browser name, for example:');
-    console.log('  -b ChromeHeadless');
-    console.log('  -b chromeHeadless');
-    console.log('  -b chrome_headless');
-    console.log('  -b "chrome headless"');
-    console.log('all work just like -b chrome-headless');
-  })
+  .addHelpText('after', `
+Available browsers if installed (for -b, --browser <name>):
+  electron (embedded, default choice), chrome, chrome-headless, chromium, chromium-headless, firefox, firefox-headless, edge, edge-headless, safari
+
+There is some tolerance on browser name, for example:
+  -b ChromeHeadless
+  -b chromeHeadless
+  -b chrome_headless
+  -b "chrome headless"
+all work just like -b chrome-headless
+`)
   .parse(process.argv);
 
 function onCoverage(result) {
