@@ -54,6 +54,20 @@ browsers.forEach(browser => {
       });
     });
 
+    test(`browser-do:${browser} detects passed zora tests`, t => {
+      exec('npx browserify test/samples/_zora-good.js | node bin/browser-do.js --tap' + browserArg, error => {
+        t.notOk(error);
+        t.end();
+      });
+    });
+
+    test(`browser-do:${browser} detects failed zora tests`, t => {
+      exec('npx browserify test/samples/_zora-bad.js | node bin/browser-do.js --tap' + browserArg, error => {
+        t.ok(error);
+        t.end();
+      });
+    });
+
     test(`browser-do:${browser} detects passed jasmine tests`, t => {
       exec('npx browserify test/samples/_jasmine-good.js | node bin/browser-do.js --jasmine' + browserArg, error => {
         t.notOk(error);

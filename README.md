@@ -8,7 +8,7 @@ npm i -D browser-do
 
 > Requires minimum Node.js v10.13+.
 
-browser-do is an alternative implementation of [browser-run](https://github.com/juliangruber/browser-run) and [tape-run](https://github.com/juliangruber/tape-run), with better Windows support, supports running [mocha](https://mochajs.org), [jasmine](https://jasmine.github.io), [tape](https://github.com/substack/tape) unit tests out of the box.
+browser-do is an alternative implementation of [browser-run](https://github.com/juliangruber/browser-run) and [tape-run](https://github.com/juliangruber/tape-run), with better Windows support, supports running [mocha](https://mochajs.org), [jasmine](https://jasmine.github.io), [tape](https://github.com/substack/tape), [zora](https://github.com/lorenzofox3/zora) unit tests out of the box.
 
 browser-do offers:
 
@@ -25,6 +25,7 @@ browser-do is simple and flexible. Just pipe your code to browser-do with a brow
 
 ```bash
 browserify test/all-my-tape-tests.js | browser-do --tap
+browserify test/all-my-zora-tests.js | browser-do --tap
 browserify test/all-my-jasmine-tests.js | browser-do --jasmine
 browserify test/all-my-mocha-tests.js | browser-do --mocha --browser chrome-headless
 ```
@@ -41,7 +42,7 @@ browser-do --tap < dist/my-test-bundle.js
 Get-Content dist/my-test-bundle.js | browser-do --tap # or jasmine/mocha
 ```
 
-One more tip, because browser-do normalises tape/jasmine/mocha into TAP output, you can further pipe it to any TAP [pretty reporters](https://github.com/substack/tape#pretty-reporters)
+One more tip, because browser-do normalises jasmine/mocha into TAP output, plus the default TAP output from tape/zora, you can further pipe the output to any TAP [pretty reporters](https://github.com/substack/tape#pretty-reporters)
 ```bash
 browserify test/all-my-jasmine-tests.js | browser-do --jasmine | tap-dot
 ```
@@ -175,6 +176,13 @@ Tape is easy to support, as it doesn't pollute global variables. All browser-do 
 
 ```bash
 browserify some-tap-test.js | browser-do -t # or --tap
+```
+
+#### Zora
+
+Zora is the same story as Tape.
+```bash
+browserify some-zora-test.js | browser-do -t # or --tap
 ```
 
 #### Jasmine
