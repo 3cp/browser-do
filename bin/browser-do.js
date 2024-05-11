@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
-const opts = require('commander');
+const { program } = require('commander');
 const fs = require('fs');
 const path = require('path');
 const browserDo = require('../index');
 
-opts
+program
   .version(require('../package.json').version)
   .option('-b, --browser <name>', 'Browser to use, see available browsers below', 'electron')
   .option('-p, --port <port>', 'Starts listening on that port and waits for you to open a browser')
@@ -44,7 +44,7 @@ function onCoverage(result) {
     '# then view coverage/lcov-report/index.html in a browser\n');
 }
 
-const options = opts.opts();
+const options = program.opts();
 options.onCoverage = onCoverage;
 
 const run = browserDo(options);
