@@ -1,3 +1,17 @@
+# [5.0.0](https://github.com/3cp/browser-do/compare/v4.1.0...v5.0.0) (2024-05-11)
+
+
+### chore
+
+* upgrade deps ([fd1adef](https://github.com/3cp/browser-do/commit/fd1adef16da60f03eafa30b32363347c9cfc8407))
+
+
+### BREAKING CHANGES
+
+* drop support of Nodejs < v18
+
+
+
 # [4.1.0](https://github.com/3cp/browser-do/compare/v4.0.0...v4.1.0) (2022-01-23)
 
 
