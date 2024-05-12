@@ -27,7 +27,7 @@ test('In browsers', async t => {
       if (browser === 'electron') {
         await t.test('browser-do by default uses electron to detect passed zora tests', async t => {
           return new Promise(resolve => {
-            exec('npx cat test-samples-dist/_zora-good.js | node bin/browser-do.js --tap', error => {
+            exec('npx esbuild --bundle test/samples/_zora-good.js | node bin/browser-do.js --tap', error => {
               t.notOk(error);
               resolve();
             });
@@ -36,7 +36,7 @@ test('In browsers', async t => {
 
         await t.test('browser-do by default uses electron to detect failed zora tests', async t => {
           return new Promise(resolve => {
-            exec('npx cat test-samples-dist/_zora-bad.js | node bin/browser-do.js --tap', error => {
+            exec('npx esbuild --bundle test/samples/_zora-bad.js | node bin/browser-do.js --tap', error => {
               t.ok(error);
               resolve();
             });
@@ -46,7 +46,7 @@ test('In browsers', async t => {
 
       await t.test(`browser-do:${browser} detects passed zora tests`, async t => {
         return new Promise(resolve => {
-          exec('npx cat test-samples-dist/_zora-good.js | node bin/browser-do.js --tap' + browserArg, error => {
+          exec('npx esbuild --bundle test/samples/_zora-good.js | node bin/browser-do.js --tap' + browserArg, error => {
             t.notOk(error);
             resolve();
           });
@@ -55,7 +55,7 @@ test('In browsers', async t => {
 
       await t.test(`browser-do:${browser} detects failed zora tests`, async t => {
         return new Promise(resolve => {
-          exec('npx cat test-samples-dist/_zora-bad.js | node bin/browser-do.js --tap' + browserArg, error => {
+          exec('npx esbuild --bundle test/samples/_zora-bad.js | node bin/browser-do.js --tap' + browserArg, error => {
             t.ok(error);
             resolve();
           });
@@ -64,7 +64,7 @@ test('In browsers', async t => {
 
       await t.test(`browser-do:${browser} detects passed jasmine tests`, async t => {
         return new Promise(resolve => {
-          exec('npx cat test-samples-dist/_jasmine-good.js | node bin/browser-do.js --jasmine' + browserArg, error => {
+          exec('npx esbuild --bundle test/samples/_jasmine-good.js | node bin/browser-do.js --jasmine' + browserArg, error => {
             t.notOk(error);
             resolve();
           });
@@ -73,7 +73,7 @@ test('In browsers', async t => {
 
       await t.test(`browser-do:${browser} detects failed jasmine tests`, async t => {
         return new Promise(resolve => {
-          exec('npx cat test-samples-dist/_jasmine-bad.js | node bin/browser-do.js --jasmine' + browserArg, error => {
+          exec('npx esbuild --bundle test/samples/_jasmine-bad.js | node bin/browser-do.js --jasmine' + browserArg, error => {
             t.ok(error);
             resolve();
           });
@@ -82,7 +82,7 @@ test('In browsers', async t => {
 
       await t.test(`browser-do:${browser} supports jasmine fit tests`, async t => {
         return new Promise(resolve => {
-          exec('npx cat test-samples-dist/_jasmine-fit.js | node bin/browser-do.js --jasmine' + browserArg, error => {
+          exec('npx esbuild --bundle test/samples/_jasmine-fit.js | node bin/browser-do.js --jasmine' + browserArg, error => {
             t.notOk(error);
             resolve();
           });
@@ -91,7 +91,7 @@ test('In browsers', async t => {
 
       await t.test(`browser-do:${browser} supports jasmine fdescribe tests`, async t => {
         return new Promise(resolve => {
-          exec('npx cat test-samples-dist/_jasmine-fdescribe.js | node bin/browser-do.js --jasmine' + browserArg, error => {
+          exec('npx esbuild --bundle test/samples/_jasmine-fdescribe.js | node bin/browser-do.js --jasmine' + browserArg, error => {
             t.notOk(error);
             resolve();
           });
@@ -100,7 +100,7 @@ test('In browsers', async t => {
 
       await t.test(`browser-do:${browser} supports jasmine xit tests`, async t => {
         return new Promise(resolve => {
-          exec('npx cat test-samples-dist/_jasmine-xit.js | node bin/browser-do.js --jasmine' + browserArg, error => {
+          exec('npx esbuild --bundle test/samples/_jasmine-xit.js | node bin/browser-do.js --jasmine' + browserArg, error => {
             t.notOk(error);
             resolve();
           });
@@ -109,7 +109,7 @@ test('In browsers', async t => {
 
       await t.test(`browser-do:${browser} supports jasmine xdescribe tests`, async t => {
         return new Promise(resolve => {
-          exec('npx cat test-samples-dist/_jasmine-xdescribe.js | node bin/browser-do.js --jasmine' + browserArg, error => {
+          exec('npx esbuild --bundle test/samples/_jasmine-xdescribe.js | node bin/browser-do.js --jasmine' + browserArg, error => {
             t.notOk(error);
             resolve();
           });
@@ -118,7 +118,7 @@ test('In browsers', async t => {
 
       await t.test(`browser-do:${browser} detects passed mocha tests`, async t => {
         return new Promise(resolve => {
-          exec('npx cat test-samples-dist/_mocha-good.js | node bin/browser-do.js --mocha' + browserArg, error => {
+          exec('npx esbuild --bundle test/samples/_mocha-good.js | node bin/browser-do.js --mocha' + browserArg, error => {
             t.notOk(error);
             resolve();
           });
@@ -127,7 +127,7 @@ test('In browsers', async t => {
 
       await t.test(`browser-do:${browser} detects failed mocha tests`, async t => {
         return new Promise(resolve => {
-          exec('npx cat test-samples-dist/_mocha-bad.js | node bin/browser-do.js --mocha' + browserArg, error => {
+          exec('npx esbuild --bundle test/samples/_mocha-bad.js | node bin/browser-do.js --mocha' + browserArg, error => {
             t.ok(error);
             resolve();
           });
@@ -136,7 +136,7 @@ test('In browsers', async t => {
 
       await t.test(`browser-do:${browser} supports static assets and html input`, async t => {
         return new Promise(resolve => {
-          exec('npx cat test/_jasmine-good.html | node bin/browser-do.js --jasmine --static test-samples-dist' + browserArg, error => {
+          exec('npx cat test/_jasmine-good.html | node bin/browser-do.js --jasmine --static test/samples' + browserArg, error => {
             t.notOk(error);
             resolve();
           });
@@ -145,7 +145,7 @@ test('In browsers', async t => {
 
       await t.test(`browser-do:${browser} supports static assets and html input, with failed tests`, async t => {
         return new Promise(resolve => {
-          exec('npx cat test/_jasmine-bad.html | node bin/browser-do.js --jasmine --static test-samples-dist' + browserArg, error => {
+          exec('npx cat test/_jasmine-bad.html | node bin/browser-do.js --jasmine --static test/samples' + browserArg, error => {
             t.ok(error);
             resolve();
           });

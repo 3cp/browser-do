@@ -19,9 +19,8 @@
     "preversion": "npm test",
     "version": "standard-changelog && git add CHANGELOG.md",
     "postversion": "git push && git push --tags && npm publish",
-    "pretest": "npm run lint && npm run build && npm run build-test-samples",
+    "pretest": "npm run lint && npm run build",
     "test": "pta 'test/*.spec.js' --timeout 300000 --reporter tap",
-    "build-test-samples": "node test/build-samples.js",
     "build": "node build-reporter.js",
     "prepare": "npm run build"
   },
