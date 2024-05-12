@@ -1,4 +1,4 @@
-const test = require('tape');
+const {test} = require('zora');
 const concat = require('concat-stream');
 const run = require('../index');
 
@@ -29,7 +29,7 @@ test('browser-do rans javascript, close by api', async t => {
       resolve();
     });
     browser.end('console.log("hello");');
-    setTimeout(() => browser.stop(), 6000);
+    setTimeout(() => browser.stop(), 4000);
   });
 });
 

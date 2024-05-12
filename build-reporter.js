@@ -1,12 +1,11 @@
-const fs = require('fs');
-const browserify = require('browserify');
+const { build } = require("esbuild");
+const { polyfillNode } = require("esbuild-plugin-polyfill-node");
 
-try {
-  fs.mkdirSync('dist');
-} catch (e) {
-  // ignore
-}
-
-browserify('reporter.js',)
-  .bundle()
-  .pipe(fs.createWriteStream('dist/reporter.js'));
+build({
+  entryPoints: ["reporter.js"],
+  bundle: true,
+  outfile: "dist/reporter.js",
+  plugins: [
+    polyfillNode(),
+  ],
+});

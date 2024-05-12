@@ -24,15 +24,13 @@ browser-do offers:
 browser-do is simple and flexible. Just pipe your code to browser-do with a browser of your choice (default to a headless electron).
 
 ```bash
-browserify test/all-my-tape-tests.js | browser-do --tap
-browserify test/all-my-zora-tests.js | browser-do --tap
-browserify test/all-my-jasmine-tests.js | browser-do --jasmine
-browserify test/all-my-mocha-tests.js | browser-do --mocha --browser chrome-headless
+esbuild test/all-my-tape-tests.js --bundle | browser-do --tap
+esbuild test/all-my-zora-tests.js --bundle | browser-do --tap
+esbuild test/all-my-jasmine-tests.js --bundle | browser-do --jasmine
+esbuild test/all-my-mocha-tests.js --bundle | browser-do --mocha --browser chrome-headless
 ```
 
-> Note browserify [doesn't support glob](https://github.com/browserify/browserify/pull/1205), that's why we cannot use `browserify 'test/**/*.spec.js'` here.
-
-You don't need to use browserify with browser-do. You can prepare a JavaScript bundle with any bundler, then just pipe it to browser-do.
+You don't need to use esbuild with browser-do. You can prepare a JavaScript bundle with any bundler, then just pipe it to browser-do.
 
 ```bash
 cat dist/my-test-bundle.js | browser-do --tap # or jasmine/mocha
@@ -44,7 +42,7 @@ Get-Content dist/my-test-bundle.js | browser-do --tap # or jasmine/mocha
 
 One more tip, because browser-do normalises jasmine/mocha into TAP output, plus the default TAP output from tape/zora, you can further pipe the output to any TAP [pretty reporters](https://github.com/substack/tape#pretty-reporters)
 ```bash
-browserify test/all-my-jasmine-tests.js | browser-do --jasmine | tap-dot
+esbuild test/all-my-jasmine-tests.js --bundle | browser-do --jasmine | tap-dot
 ```
 
 ## Supported Browsers
@@ -175,22 +173,22 @@ browser-do conveniently supports running [mocha](https://mochajs.org), [jasmine]
 Tape is easy to support, as it doesn't pollute global variables. All browser-do needs to do is to parse [TAP output](http://testanything.org) and automatically exit when tests finish.
 
 ```bash
-browserify some-tap-test.js | browser-do -t # or --tap
+esbuild some-tap-test.js --bundle | browser-do -t # or --tap
 ```
 
 #### Zora
 
 Zora is the same story as Tape.
 ```bash
-browserify some-zora-test.js | browser-do -t # or --tap
+esbuild some-zora-test.js --bundle | browser-do -t # or --tap
 ```
 
 #### Jasmine
 
 browser-do helps jasmine test by setup global vars before running your code.
 
-```
-browserify some-jasmine-test.js | browser-do --jasmine
+```bash
+esbuild some-jasmine-test.js --bundle | browser-do --jasmine
 ```
 
 You don't need to load jasmine before running your code, browser-do does that automatically, as long as you did `npm i -D jasmine-core`.
@@ -220,8 +218,8 @@ FYI, here is the special `index.html` browser-do provided for jasmine. Showing h
 
 browser-do helps mocha test by setup global vars before running your code.
 
-```
-browserify some-mocha-test.js | browser-do --mocha
+```bash
+esbuild some-mocha-test.js --bundle | browser-do --mocha
 ```
 
 You don't need to load mocha before running your code, browser-do does that automatically, as long as you did `npm i -D mocha`.

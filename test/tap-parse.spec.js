@@ -1,4 +1,4 @@
-const test = require('tape');
+const {test} = require('zora');
 const {PassThrough} = require('stream');
 const tapParse = require('../lib/tap-parse');
 
