@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const run = require('./lib/browser-run');
 const {Transform} = require('stream');
 const tapParse = require('./lib/tap-parse');
